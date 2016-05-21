@@ -42,6 +42,7 @@ namespace ProfessorOak
 
         protected void Page_Load(object sender, EventArgs e)
         {
+            Page.RegisterClientScriptBlock("UniqueKey", "<script language=javascript src='Myjavascriptfile.js'>");
             MultiView1.ActiveViewIndex = 0;
         }
 
@@ -112,6 +113,30 @@ namespace ProfessorOak
             Session["hero"] = item;
 
             MultiView1.ActiveViewIndex = 3;
+        }
+
+        protected void Mode_Select(object sender, EventArgs e)
+        {
+            if (rbtLstRating.SelectedIndex == 0)
+            {
+                this.negT = 0;
+                this.posT = 0;
+            }
+            else if (rbtLstRating.SelectedIndex == 1)
+            {
+                this.negT = 0;
+                this.posT = 1;
+            }
+            else if (rbtLstRating.SelectedIndex == 2)
+            {
+                this.negT = 1;
+                this.posT = 0;
+            }
+            else if (rbtLstRating.SelectedIndex == 3)
+            {
+                this.negT = 1;
+                this.posT = 1;
+            }
         }
 
         protected async Task InvokeRequestResponseService(Hero hero)

@@ -46,8 +46,10 @@
                             </div>
 
                             <div class="form-group">
-                                <label class="control-label" for="focusedInput">Current Mode</label><br />
-                                 &nbsp;&nbsp;<asp:RadioButtonList ID="rbtLstRating" runat="server" RepeatDirection="Horizontal">
+                                <label class="control-label" for="focusedInput">Recent Mode</label><br />
+                                 &nbsp;&nbsp;
+                                <asp:RadioButtonList ID="rbtLstRating" runat="server" 
+                                    RepeatDirection="Horizontal" OnSelectedIndexChanged="Mode_Select" AutoPostBack="true">
                                 <asp:ListItem text="&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" value="n0p0" Selected></asp:ListItem>
                                 <asp:ListItem  text="&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" value="n0p1"></asp:ListItem>
                                 <asp:ListItem  text="&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" value="n1p0"></asp:ListItem>
