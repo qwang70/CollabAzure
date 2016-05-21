@@ -4,6 +4,18 @@
     
     <asp:MultiView ID="MultiView1"  runat="server">
          <asp:View ID="Welcome" runat="server">
+               <div class="jumbotron">
+                   <form id="Form1">
+                        <input type="text" id="Message" /> <input type="button" value="ClickMe" onclick="DoClick()" />
+                    </form>
+
+                 <!--<form id="Form1">
+                        <input type="text" id="message" /><input type="button" value="ClickMe" onclick="DoClick()" />
+                 </form>
+                  <form id="Form2">
+                        <input type="text" id="Message" /><input type="button" value="ClickMe!" onclick="DoClick1()" />
+                 </form>-->
+             </div>
             <div class="jumbotron">
                 <img src="Asset/damu/logo.png" width="220px" align="right" />
                 <font face="Comic sans MS"><h2>Game Rule:</h2>
@@ -49,7 +61,7 @@
                                 <label class="control-label" for="focusedInput">Recent Mode</label><br />
                                  &nbsp;&nbsp;
                                 <asp:RadioButtonList ID="rbtLstRating" runat="server" 
-                                    RepeatDirection="Horizontal" OnSelectedIndexChanged="Mode_Select" AutoPostBack="true">
+                                    RepeatDirection="Horizontal" OnSelectedIndexChanged="Mode_Select">
                                 <asp:ListItem text="&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" value="n0p0" Selected></asp:ListItem>
                                 <asp:ListItem  text="&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" value="n0p1"></asp:ListItem>
                                 <asp:ListItem  text="&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" value="n1p0"></asp:ListItem>
@@ -88,7 +100,9 @@
                  </canvas> 
                 -->
                  <asp:Literal ID="LiteralSpecial" runat="server"></asp:Literal>
+                 
              </div>
+           
          </asp:View>
     </asp:MultiView>
 
