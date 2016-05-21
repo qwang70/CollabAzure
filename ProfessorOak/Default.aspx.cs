@@ -36,6 +36,10 @@ namespace ProfessorOak
         private int rank    =200;
         private int interdays=1;
 
+        private HttpResponseMessage response;
+        private string responseString;
+
+
         protected void Page_Load(object sender, EventArgs e)
         {
             MultiView1.ActiveViewIndex = 0;
@@ -89,12 +93,12 @@ namespace ProfessorOak
             if (this.churn == 1)
             {
                 LiteralSpecial.Text = "Congratulations, you found the ultimate helmet! <BR> Using this, you won the fight!";
-                ImageSpecial.Visible = true;
+                
             }
             else
             {
                 LiteralSpecial.Text = "The monster is too powerful. You lost!";
-                ImageSpecial.Visible = false;
+                
 
             }
         }
@@ -159,11 +163,13 @@ namespace ProfessorOak
                     dynamic jsonDe = JsonConvert.DeserializeObject(json);
                     JArray items = jsonDe.Results.output1.value.Values[0];
 
-                    int label = Int32.Parse(items[8].ToString());
-                    double scoreProb = Double.Parse(items[9].ToString());
+                    int label = Int32.Parse(items[9].ToString());
+                    double scoreProb = Double.Parse(items[10].ToString());
+
+                    Console.WriteLine("label:\t{0,8:c}"+ scoreProb);
 
                     //  Indicate whether the user churn
-                    if (label == 1 || scoreProb > 0.1)
+                    if (label == 1)
                         this.churn = 1;
                     else
                         this.churn = 0;
@@ -171,14 +177,14 @@ namespace ProfessorOak
                 }
                 else
                 {
-                    //  Console.WriteLine(string.Format("The request failed with status code: {0}", response.StatusCode));
+                     Console.WriteLine(string.Format("The request failed with status code: {0}", response.StatusCode));
 
                     // Print the headers - they include the requert ID and the timestamp, which are useful for debugging the failure
-                    //Console.WriteLine(response.Headers.ToString());
+                    Console.WriteLine(response.Headers.ToString());
 
-                    //  string responseContent = await response.Content.ReadAsStringAsync().ConfigureAwait(false;
-                    //   Console.WriteLine(responseContent);
-                    //
+                      string responseContent = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
+                       Console.WriteLine(responseContent);
+                    
                 }
 
             }

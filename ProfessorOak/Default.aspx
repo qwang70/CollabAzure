@@ -85,6 +85,7 @@
 
                  </canvas> 
                 -->
+                 <asp:Literal ID="LiteralSpecial" runat="server"></asp:Literal>
              </div>
          </asp:View>
     </asp:MultiView>
