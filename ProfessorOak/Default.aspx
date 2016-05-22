@@ -5,9 +5,7 @@
     <asp:MultiView ID="MultiView1"  runat="server">
          <asp:View ID="Welcome" runat="server">
                <div class="jumbotron">
-                   <form id="Form1">
                         <input type="text" id="Message" /> <input type="button" value="ClickMe" onclick="DoClick()" />
-                    </form>
 
                  <!--<form id="Form1">
                         <input type="text" id="message" /><input type="button" value="ClickMe" onclick="DoClick()" />
@@ -93,12 +91,13 @@
         
         <!--LoadFakeInfo-->
          <asp:View ID="View3" runat="server">
+                 <body onload="init()">
+	            </body>
+             
              <div class="jumbotron">
-                 <!--
-                 <canvas id="myCanvas" width="1000px" height="1000px" style="border:1px solid #000000;">
+                 <canvas id="background" width="1000px" height="1000px" style="border:1px solid #000000;">
 
                  </canvas> 
-                -->
                  <asp:Literal ID="LiteralSpecial" runat="server"></asp:Literal>
                  
              </div>

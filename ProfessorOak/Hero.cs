@@ -29,7 +29,7 @@ public class Hero
         this.negT = r.Next(0, 2);
         this.posT = r.Next(0, 2);
         this.duration = 0;
-        this.currency = 0;
+        this.currency = 1000;
         this.churn = r.Next(0, 1);
         this.weapon = 1;
         this.rank = 200;

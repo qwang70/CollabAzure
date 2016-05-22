@@ -14,6 +14,7 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.IO;
 using System.Data.SqlClient;
+using System.Web.Services;
 
 namespace ProfessorOak
 {
@@ -23,14 +24,14 @@ namespace ProfessorOak
         public string[,] Values { get; set; }
     }
 
-    public partial class _Default : Page
+    public partial class _Default : System.Web.UI.Page
     {
         private string nickname;
         private int age     =30;
         private int negT    =0;
         private int posT    =0;
         private int duration=0;
-        private int currency=0;
+        private int currency=1000;
         private int churn   =0;
         private int weapon  =1;
         private int rank    =200;
@@ -42,6 +43,8 @@ namespace ProfessorOak
 
         protected void Page_Load(object sender, EventArgs e)
         {
+
+            /*works
             String csname1 = "PopupScript";
             String csname2 = "ButtonClickScript";
             Type cstype = this.GetType();
@@ -65,7 +68,22 @@ namespace ProfessorOak
                 cstext2.Append("script>");
                 cs.RegisterClientScriptBlock(cstype, csname2, cstext2.ToString(), false);
             }
+            */
+            
+            // Define the name, type and url of the client script on the page.
+            String csname = "GameArea";
+            String csurl = "~/test.js";
+            Type cstype = this.GetType();
 
+            // Get a ClientScriptManager reference from the Page class.
+            ClientScriptManager cs = Page.ClientScript;
+
+            // Check to see if the include script exists already.
+            if (!cs.IsClientScriptIncludeRegistered(cstype, csname))
+            {
+                cs.RegisterClientScriptInclude(cstype, csname, ResolveClientUrl(csurl));
+            }
+            
             MultiView1.ActiveViewIndex = 0;
         }
 
@@ -175,7 +193,14 @@ namespace ProfessorOak
             }
         }
 
-        protected async Task InvokeRequestResponseService(Hero hero)
+        [WebMethod]
+        public static int testPage(int i)
+        {
+            return i + 3;
+        }
+
+        [WebMethod]
+        public async Task InvokeRequestResponseService(Hero hero)
         {
 
             string mlUri = ConfigurationManager.AppSettings["MLUri"];
@@ -227,7 +252,7 @@ namespace ProfessorOak
                     int label = Int32.Parse(items[9].ToString());
                     double scoreProb = Double.Parse(items[10].ToString());
 
-                    Console.WriteLine("label:\t{0,8:c}"+ scoreProb);
+                    System.Diagnostics.Debug.Write("scoreProb:\t{0,8:c}" + scoreProb);
 
                     //  Indicate whether the user churn
                     if (label == 1)
@@ -253,3 +278,5 @@ namespace ProfessorOak
 
         }
     }
+     
+     
