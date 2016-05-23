@@ -6,7 +6,15 @@
  * Initialize the Game and starts it.
  */
 var game = new Game();
+var churn = 0;
 
+function MyMethod_Result(ResultString) {
+    alert(ResultString);
+}
+
+function CallMyMethod() {
+    PageMethods.MyMehod("World", MyMethod_Result);
+}
 function init() {
 
     PageMethods.testPage(OnSucceeded, OnFailed);

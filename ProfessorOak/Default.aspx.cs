@@ -124,9 +124,8 @@ namespace ProfessorOak
             item = new Hero(nickname, age, negT, posT, duration, currency, weapon, rank, interdays);
             item.GameTime = DateTime.Now.ToUniversalTime();
 
-           // Session["hero"] = item;
+           Session["hero"] = item;
             
-            MultiView1.ActiveViewIndex = 3;
 
             // Predict whether customer will churn
             InvokeRequestResponseService(item).Wait();
@@ -151,9 +150,8 @@ namespace ProfessorOak
             item = new Hero();
             item.GameTime = DateTime.Now.ToUniversalTime();
 
-            //Session["hero"] = item;
-
-            MultiView1.ActiveViewIndex = 3;
+            Session["hero"] = item;
+            
 
             InvokeRequestResponseService(item).Wait();
 

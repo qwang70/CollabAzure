@@ -1,28 +1,7 @@
 ﻿<%@ Page Title="Welcome" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="Default.aspx.cs" Inherits="ProfessorOak._Default" %>
 
 <asp:Content ID="BodyContent" ContentPlaceHolderID="MainContent" runat="server">
-    -       <asp:ScriptManager id="ScriptManager" ScriptMode="Debug" runat="server" EnablePageMethods="true" EnablePartialRendering="true">
-            <Scripts>
-                <%--To learn more about bundling scripts in ScriptManager see http://go.microsoft.com/fwlink/?LinkID=301884 --%>
-                <%--Framework Scripts--%>
-                <asp:ScriptReference Name="MsAjaxBundle" />
-                <asp:ScriptReference Name="jquery" />
-                <asp:ScriptReference Name="bootstrap" />
-                <asp:ScriptReference Name="respond" />
-                <asp:ScriptReference Name="WebForms.js" Assembly="System.Web" Path="~/Scripts/WebForms/WebForms.js" />
-                <asp:ScriptReference Name="WebUIValidation.js" Assembly="System.Web" Path="~/Scripts/WebForms/WebUIValidation.js" />
-                <asp:ScriptReference Name="MenuStandards.js" Assembly="System.Web" Path="~/Scripts/WebForms/MenuStandards.js" />
-                <asp:ScriptReference Name="GridView.js" Assembly="System.Web" Path="~/Scripts/WebForms/GridView.js" />
-                <asp:ScriptReference Name="DetailsView.js" Assembly="System.Web" Path="~/Scripts/WebForms/DetailsView.js" />
-                <asp:ScriptReference Name="TreeView.js" Assembly="System.Web" Path="~/Scripts/WebForms/TreeView.js" />
-                <asp:ScriptReference Name="WebParts.js" Assembly="System.Web" Path="~/Scripts/WebForms/WebParts.js" />
-                <asp:ScriptReference Name="Focus.js" Assembly="System.Web" Path="~/Scripts/WebForms/Focus.js" />
-                <asp:ScriptReference Name="WebFormsBundle" />
-                <%--Site Scripts--%>
-                <asp:ScriptReference Path="~/test.js" />
 
-            </Scripts>
-        </asp:ScriptManager>
     <asp:MultiView ID="MultiView1"  runat="server">
          <asp:View ID="Welcome" runat="server">
              <header>
@@ -65,12 +44,6 @@ function onFailed(error, userContext, methodName) {
 
                         <input type="text" id="Message" /> <input type="button" value="ClickMe" onclick="DoClick()" />
 
-                 <!--<form id="Form1">
-                        <input type="text" id="message" /><input type="button" value="ClickMe" onclick="DoClick()" />
-                 </form>
-                  <form id="Form2">
-                        <input type="text" id="Message" /><input type="button" value="ClickMe!" onclick="DoClick1()" />
-                 </form>-->
              </div>
             <div class="jumbotron">
                 <img src="Asset/damu/logo.png" width="220px" align="right" />
@@ -129,7 +102,7 @@ function onFailed(error, userContext, methodName) {
                                 <img src="Asset/mode/n1p1.jpg" width="50px"/><br />
                             </div>
                         <!--Remember to onclick-->
-                        <asp:Button runat="server" class="btn btn-primary btn-lg" id="fixstart" OnClick="StartGame_Click" Text="Start Game" />
+                        <asp:Button runat="server" class="btn btn-primary btn-lg" id="fixstart" OnClick="StartGame_Click" Text="Start Game" postbackurl="~/inGame.aspx"/>
 
                         </div>
                     <div class="col-md-6" style="text-align:center">
