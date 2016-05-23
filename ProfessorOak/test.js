@@ -13,7 +13,8 @@ function MyMethod_Result(ResultString) {
 }
 
 function CallMyMethod() {
-    PageMethods.MyMehod("World", MyMethod_Result);
+    CallPageMethod(OnSucceeded, OnFailed);
+    //PageMethods.MyMethod("World", MyMethod_Result, OnFailed);
 }
 function init() {
 
@@ -22,6 +23,19 @@ function init() {
     if (game.init())
         game.start();
 }
+
+function CallPageMethod(OnSucceeded, OnFailed) {
+    $.ajax({
+        type: "POST",
+        url:"inGame.aspx/MyMethod",
+        data: "{}",
+        contentType: "application/json; charset=utf-8",
+        dataType: "json",
+        success: OnSucceeded,
+        fail: OnFailed
+    });
+}
+
 
 /**
  * Creates the Game object which will hold all objects and data for
@@ -143,7 +157,7 @@ window.requestAnimFrame = (function () {
 // completion of the page method.
 function OnSucceeded(result, userContext, methodName) {
     //alert(result);
-    window.alert(5 + 6);
+    window.alert(result);
     console.log(10);
 
 }

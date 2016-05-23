@@ -13,6 +13,7 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
+using System.IO;
 
 namespace ProfessorOak
 {
@@ -44,9 +45,9 @@ namespace ProfessorOak
 
         [WebMethod]
         [System.Web.Script.Services.ScriptMethod]
-        public static string MyMethod(string name)
+        public static string MyMethod()
         {
-            return "Hello" + name;
+            return "Hello";
         }
 
     }

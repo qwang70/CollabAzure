@@ -7,7 +7,7 @@
     <body onload="init()">
 	</body>
     <div class="jumbotron">
-        <input id="Button1" type="button" value="button" onclick="CallMyMethod();" />
+        <input id="Result" type="button" value="button" onclick="CallMyMethod();" />
 
     </div>
 
