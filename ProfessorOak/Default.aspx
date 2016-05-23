@@ -4,7 +4,44 @@
     
     <asp:MultiView ID="MultiView1"  runat="server">
          <asp:View ID="Welcome" runat="server">
+             <header>
+                 
+<script runat="server">
+[System.Web.Services.WebMethod] 
+[System.Web.Script.Services.ScriptMethod]
+public static string MyMethod() 
+{
+return "MyMethod Called"; 
+}
+</script> 
+
+
+<script language="javascript">
+function preview() 
+{
+
+PageMethods.MyMethod(onComplete, onFailed);
+
+}
+function onComplete(res) 
+{
+
+alert(res);
+
+}
+
+function onFailed(error, userContext, methodName) {
+    window.alert(6 + 6);
+    console.log(1000);
+
+}
+</script> 
+             </header>
                <div class="jumbotron">
+                   
+ 
+<input id="Button1" type="button" value="button" onclick="javascript:preview();" />
+
                         <input type="text" id="Message" /> <input type="button" value="ClickMe" onclick="DoClick()" />
 
                  <!--<form id="Form1">
@@ -91,6 +128,7 @@
         
         <!--LoadFakeInfo-->
          <asp:View ID="View3" runat="server">
+       
                  <body onload="init()">
 	            </body>
              

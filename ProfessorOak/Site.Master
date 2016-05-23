@@ -17,7 +17,7 @@
 </head>
 <body style="background-image:url(Asset/bgimg.jpg); background-size:2800px;background-position:center;">
     <form id="Form1" runat="server">
-        <asp:ScriptManager id="ScriptManager" runat="server" EnablePageMethods="true" EnablePartialRendering="true">
+-       <asp:ScriptManager id="ScriptManager" runat="server" EnablePageMethods="true" EnablePartialRendering="true">
             <Scripts>
                 <%--To learn more about bundling scripts in ScriptManager see http://go.microsoft.com/fwlink/?LinkID=301884 --%>
                 <%--Framework Scripts--%>
@@ -35,7 +35,7 @@
                 <asp:ScriptReference Name="Focus.js" Assembly="System.Web" Path="~/Scripts/WebForms/Focus.js" />
                 <asp:ScriptReference Name="WebFormsBundle" />
                 <%--Site Scripts--%>
-                <asp:ScriptReference Path="test.js" />
+                <asp:ScriptReference Path="~/test.js" />
 
             </Scripts>
         </asp:ScriptManager>
