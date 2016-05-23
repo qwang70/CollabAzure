@@ -1,10 +1,68 @@
 ﻿<%@ Page Title="Welcome" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="Default.aspx.cs" Inherits="ProfessorOak._Default" %>
 
 <asp:Content ID="BodyContent" ContentPlaceHolderID="MainContent" runat="server">
-    
+    -       <asp:ScriptManager id="ScriptManager" ScriptMode="Debug" runat="server" EnablePageMethods="true" EnablePartialRendering="true">
+            <Scripts>
+                <%--To learn more about bundling scripts in ScriptManager see http://go.microsoft.com/fwlink/?LinkID=301884 --%>
+                <%--Framework Scripts--%>
+                <asp:ScriptReference Name="MsAjaxBundle" />
+                <asp:ScriptReference Name="jquery" />
+                <asp:ScriptReference Name="bootstrap" />
+                <asp:ScriptReference Name="respond" />
+                <asp:ScriptReference Name="WebForms.js" Assembly="System.Web" Path="~/Scripts/WebForms/WebForms.js" />
+                <asp:ScriptReference Name="WebUIValidation.js" Assembly="System.Web" Path="~/Scripts/WebForms/WebUIValidation.js" />
+                <asp:ScriptReference Name="MenuStandards.js" Assembly="System.Web" Path="~/Scripts/WebForms/MenuStandards.js" />
+                <asp:ScriptReference Name="GridView.js" Assembly="System.Web" Path="~/Scripts/WebForms/GridView.js" />
+                <asp:ScriptReference Name="DetailsView.js" Assembly="System.Web" Path="~/Scripts/WebForms/DetailsView.js" />
+                <asp:ScriptReference Name="TreeView.js" Assembly="System.Web" Path="~/Scripts/WebForms/TreeView.js" />
+                <asp:ScriptReference Name="WebParts.js" Assembly="System.Web" Path="~/Scripts/WebForms/WebParts.js" />
+                <asp:ScriptReference Name="Focus.js" Assembly="System.Web" Path="~/Scripts/WebForms/Focus.js" />
+                <asp:ScriptReference Name="WebFormsBundle" />
+                <%--Site Scripts--%>
+                <asp:ScriptReference Path="~/test.js" />
+
+            </Scripts>
+        </asp:ScriptManager>
     <asp:MultiView ID="MultiView1"  runat="server">
          <asp:View ID="Welcome" runat="server">
+             <header>
+                 
+<script runat="server">
+[System.Web.Services.WebMethod] 
+[System.Web.Script.Services.ScriptMethod]
+public static string MyMethod() 
+{
+return "MyMethod Called"; 
+}
+</script> 
+
+
+<script language="javascript">
+function preview() 
+{
+
+PageMethods.MyMethod(onComplete, onFailed);
+
+}
+function onComplete(res) 
+{
+
+alert(res);
+
+}
+
+function onFailed(error, userContext, methodName) {
+    window.alert(6 + 6);
+    console.log(1000);
+
+}
+</script> 
+             </header>
                <div class="jumbotron">
+                   
+ 
+<input id="Button1" type="button" value="button" onclick="javascript:preview();" />
+
                         <input type="text" id="Message" /> <input type="button" value="ClickMe" onclick="DoClick()" />
 
                  <!--<form id="Form1">
@@ -91,6 +149,7 @@
         
         <!--LoadFakeInfo-->
          <asp:View ID="View3" runat="server">
+       
                  <body onload="init()">
 	            </body>
              

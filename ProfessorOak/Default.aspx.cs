@@ -23,7 +23,7 @@ namespace ProfessorOak
         public string[] ColumnNames { get; set; }
         public string[,] Values { get; set; }
     }
-
+    
     public partial class _Default : System.Web.UI.Page
     {
         private string nickname;
@@ -68,7 +68,7 @@ namespace ProfessorOak
                 cstext2.Append("script>");
                 cs.RegisterClientScriptBlock(cstype, csname2, cstext2.ToString(), false);
             }
-            */
+            
             
             // Define the name, type and url of the client script on the page.
             String csname = "GameArea";
@@ -82,7 +82,7 @@ namespace ProfessorOak
             if (!cs.IsClientScriptIncludeRegistered(cstype, csname))
             {
                 cs.RegisterClientScriptInclude(cstype, csname, ResolveClientUrl(csurl));
-            }
+            }*/
             
             MultiView1.ActiveViewIndex = 0;
         }
@@ -113,7 +113,7 @@ namespace ProfessorOak
             else
                 this.nickname = "Annoymous Pikachu";
 
-            if (ageInput.Text != null )
+            if (ageInput.Text != "" )
                 this.age = Convert.ToInt32(ageInput.Text);
             else
                 this.nickname = "Annoymous Pikachu";
@@ -124,7 +124,7 @@ namespace ProfessorOak
             item = new Hero(nickname, age, negT, posT, duration, currency, weapon, rank, interdays);
             item.GameTime = DateTime.Now.ToUniversalTime();
 
-            Session["hero"] = item;
+           // Session["hero"] = item;
             
             MultiView1.ActiveViewIndex = 3;
 
@@ -151,7 +151,7 @@ namespace ProfessorOak
             item = new Hero();
             item.GameTime = DateTime.Now.ToUniversalTime();
 
-            Session["hero"] = item;
+            //Session["hero"] = item;
 
             MultiView1.ActiveViewIndex = 3;
 
@@ -194,9 +194,10 @@ namespace ProfessorOak
         }
 
         [WebMethod]
-        public static int testPage(int i)
+        [System.Web.Script.Services.ScriptMethod]
+        public static void testPage()
         {
-            return i + 3;
+            System.Diagnostics.Debug.Write("getin");
         }
 
         [WebMethod]

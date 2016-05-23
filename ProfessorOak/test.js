@@ -9,7 +9,7 @@ var game = new Game();
 
 function init() {
 
-    PageMethods.testPage(3, OnSucceeded, OnFailed);
+    PageMethods.testPage(OnSucceeded, OnFailed);
 
     if (game.init())
         game.start();
@@ -134,13 +134,16 @@ window.requestAnimFrame = (function () {
 // Callback function invoked on successful 
 // completion of the page method.
 function OnSucceeded(result, userContext, methodName) {
-    alert(result);
+    //alert(result);
+    window.alert(5 + 6);
+    console.log(10);
 
 }
 
 // Callback function invoked on failure 
 // of the page method.
 function OnFailed(error, userContext, methodName) {
-    alert(error);
+    window.alert(6 + 6);
+    console.log(1000);
 
 }
