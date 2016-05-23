@@ -2,38 +2,33 @@
     Form1.Message.value = 'Text from javascript';
 };
 
+function CallMyMethod() {
+    CallPageMethod(OnSucceeded, OnFailed);
+}
+
+function CallPageMethod(OnSucceeded, OnFailed) {
+    $.ajax({
+        type: "POST",
+        url: "inGame.aspx/MyMethod",
+        data: '{name: "' + this.churn + '" }',
+        contentType: "application/json; charset=utf-8",
+        dataType: "json",
+        success: OnSucceeded,
+        fail: OnFailed
+    });
+}
+
 /**
  * Initialize the Game and starts it.
  */
 var game = new Game();
 var churn = 0;
 
-function MyMethod_Result(ResultString) {
-    alert(ResultString);
-}
 
-function CallMyMethod() {
-    CallPageMethod(OnSucceeded, OnFailed);
-    //PageMethods.MyMethod("World", MyMethod_Result, OnFailed);
-}
 function init() {
-
-    PageMethods.testPage(OnSucceeded, OnFailed);
 
     if (game.init())
         game.start();
-}
-
-function CallPageMethod(OnSucceeded, OnFailed) {
-    $.ajax({
-        type: "POST",
-        url:"inGame.aspx/MyMethod",
-        data: "{}",
-        contentType: "application/json; charset=utf-8",
-        dataType: "json",
-        success: OnSucceeded,
-        fail: OnFailed
-    });
 }
 
 
@@ -157,7 +152,7 @@ window.requestAnimFrame = (function () {
 // completion of the page method.
 function OnSucceeded(result, userContext, methodName) {
     //alert(result);
-    window.alert(result);
+    window.alert(result.d);
     console.log(10);
 
 }
