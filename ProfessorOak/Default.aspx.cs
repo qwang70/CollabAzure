@@ -113,7 +113,7 @@ namespace ProfessorOak
             else
                 this.nickname = "Annoymous Pikachu";
 
-            if (ageInput.Text != null )
+            if (ageInput.Text != "" )
                 this.age = Convert.ToInt32(ageInput.Text);
             else
                 this.nickname = "Annoymous Pikachu";
@@ -124,7 +124,7 @@ namespace ProfessorOak
             item = new Hero(nickname, age, negT, posT, duration, currency, weapon, rank, interdays);
             item.GameTime = DateTime.Now.ToUniversalTime();
 
-            Session["hero"] = item;
+           // Session["hero"] = item;
             
             MultiView1.ActiveViewIndex = 3;
 
@@ -151,7 +151,7 @@ namespace ProfessorOak
             item = new Hero();
             item.GameTime = DateTime.Now.ToUniversalTime();
 
-            Session["hero"] = item;
+            //Session["hero"] = item;
 
             MultiView1.ActiveViewIndex = 3;
 

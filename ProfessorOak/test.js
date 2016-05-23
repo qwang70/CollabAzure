@@ -9,8 +9,7 @@ var game = new Game();
 
 function init() {
 
-    preview();
-    //PageMethods.testPage(OnSucceeded, OnFailed);
+    PageMethods.testPage(OnSucceeded, OnFailed);
 
     if (game.init())
         game.start();
