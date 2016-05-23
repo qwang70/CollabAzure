@@ -44,12 +44,6 @@ function onFailed(error, userContext, methodName) {
 
                         <input type="text" id="Message" /> <input type="button" value="ClickMe" onclick="DoClick()" />
 
-                 <!--<form id="Form1">
-                        <input type="text" id="message" /><input type="button" value="ClickMe" onclick="DoClick()" />
-                 </form>
-                  <form id="Form2">
-                        <input type="text" id="Message" /><input type="button" value="ClickMe!" onclick="DoClick1()" />
-                 </form>-->
              </div>
             <div class="jumbotron">
                 <img src="Asset/damu/logo.png" width="220px" align="right" />
