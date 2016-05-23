@@ -120,8 +120,6 @@ pokemon.prototype = new Drawable();
 
 function pokeball() {
 
-    this.x = this.init.x;
-    this.y = this.init.y;
     this.iniX = 2;
     this.iniY = -20;
     this.speedX = this.iniX;
@@ -158,14 +156,13 @@ function pokemon() {
 	 */
     this.spawn = function (speed) {
         if (speed > 0) {
-            this.x = this.init.x;
+
         }
         else {
 
-            this.x = bgpokemon.prototype.canvasWidth - this.init.x;
+            this.x = bgpokemon.prototype.canvasWidth - this.x;
         }
 
-        this.y = this.init.y;
         this.speed = speed;
         this.alive = true;
     };
@@ -213,6 +210,8 @@ var imageRepository = new function () {
     this.background.src = "Asset/pokemon/background.png";
     this.pokeball.src = "Asset/pokemon/Pokeball.png";
     this.pokemon.src = "Asset/pokemon/pokemon.gif";
+    this.pokemon.width = 100;
+    this.pokemon.height = 100;
 }
 
 /**
