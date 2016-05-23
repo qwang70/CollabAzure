@@ -5,37 +5,7 @@
     <asp:MultiView ID="MultiView1"  runat="server">
          <asp:View ID="Welcome" runat="server">
              <header>
-                 
-<script runat="server">
-[System.Web.Services.WebMethod] 
-[System.Web.Script.Services.ScriptMethod]
-public static string MyMethod() 
-{
-return "MyMethod Called"; 
-}
-</script> 
-
-
-<script language="javascript">
-function preview() 
-{
-
-PageMethods.MyMethod(onComplete, onFailed);
-
-}
-function onComplete(res) 
-{
-
-alert(res);
-
-}
-
-function onFailed(error, userContext, methodName) {
-    window.alert(6 + 6);
-    console.log(1000);
-
-}
-</script> 
+        
              </header>
                <div class="jumbotron">
                    
@@ -110,7 +80,7 @@ function onFailed(error, userContext, methodName) {
                         <h2>Go Annoymous
                         </h2>
                         <!--Remember to onclick-->
-                        <asp:Button runat="server" class="btn btn-primary btn-lg" OnClick="RandomGame_Click" Text="Randomize Character" />
+                        <asp:Button runat="server" class="btn btn-primary btn-lg" OnClick="RandomGame_Click" Text="Randomize Character" postbackurl="~/inGame.aspx" />
                     </div>
                 </div>
             </div>

@@ -186,6 +186,7 @@
     <Content Include="Asset\mode\n0p1.jpg" />
     <Content Include="Asset\mode\n1p0.jpg" />
     <Content Include="Asset\mode\n1p1.jpg" />
+    <Content Include="Asset\pokemon\background.png" />
     <Content Include="Asset\pokemon\charizard1.png" />
     <Content Include="Asset\pokemon\charmander1.png" />
     <Content Include="Asset\pokemon\charmander2.png" />
@@ -201,8 +202,11 @@
     <Content Include="Asset\pokemon\pika2.png" />
     <Content Include="Asset\pokemon\pika3.png" />
     <Content Include="Asset\pokemon\pika4.png" />
+    <Content Include="Asset\pokemon\Pokeball.png" />
+    <Content Include="Asset\pokemon\pokemon.gif" />
     <Content Include="Asset\pokemon\raichu1.png" />
     <Content Include="Asset\pokemon\raichu2.png" />
+    <Content Include="Asset\pokemon\tumblr_ln02owjkxA1qg0dcvo1_400.gif" />
     <Content Include="Asset\pokemon\voltorb1.png" />
     <Content Include="Asset\pokemon\weezing1.png" />
     <Content Include="Asset\titleBlue.png" />
@@ -220,6 +224,7 @@
     <Content Include="Account\Web.config" />
     <None Include="Properties\PublishProfiles\ProfessorOakGame.pubxml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
+    <Content Include="game.js" />
     <Content Include="inGame.aspx" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
