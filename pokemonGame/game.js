@@ -1,5 +1,7 @@
-var pokeball;
-var pokemon;;
+//TODO display the canvas when all the resources are loaded
+
+var pokeballComponent;
+var pokemon;
 
 var myGameArea =  {
   canvas: document.createElement('canvas'),
@@ -17,18 +19,37 @@ var myGameArea =  {
   }
 }; 
 
+var gameboard = {
+  digit1: 0,
+  digit2: 0,
+  digit3: 0,
+  digit4: 0,
+
+  init: function() {
+    this.digitOne = Image();
+    tihs.digitOne.src = 'one.jpeg';
+  },
+
+  update: function() {
+  
+  },
+};
+
 function startGame() {
   var canvasWidth = 480;
   var canvasHeight = 270;
   var pokemonStart = 100;
-  pokeball = new gameComponentFromImg(20, canvasHeight - 60, 40, 'Pokeball.png');
-  pokemon = new gameComponentFromImg(canvasWidth/2, pokemonStart, 80, 'pokemon.gif');
+  pokeballComponent = new pokeball(
+    20, canvasHeight - 60, 40, 'Pokeball.png');
+  pokemon = new gameComponentFromImg(
+    canvasWidth/2, pokemonStart, 80, 'pokemon.gif');
   myGameArea.start(canvasWidth, canvasHeight);
 }
 
 function updateGame() {
-  pokeball.update();
-  pokemon.update();
+  pokeballComponent.update();
+  //pokemon.update();
+  //gameboard.update();
 }
 
 function gameComponentFromImg(startX, startY, size, src) {
@@ -45,26 +66,41 @@ function gameComponentFromImg(startX, startY, size, src) {
   
   this.image.onload = function() {
    //set the height of the image  
-    console.log(this.parent);
     this.parent.isLoaded = true;
     this.parent.height = this.parent.width * (this.height/this.width);
-  }
+  };
+
+  this.newPosition = function() {};
   
-  this.update = function() {
+  this.draw = function() {
+    //redraw the component
     var ctx = myGameArea.ctx;
     if (this.isLoaded) {
       ctx.drawImage(this.image, this.x, this.y, this.width, this.height);
     }
   };
+
+  this.update = function() {
+    this.newPosition();
+    this.draw(); 
+  };
 }
 
-function pokeMonToPokeBallAnimation() {
-  //make the pokemon white
-  //morph it into a ball
-  this.width = this.width - this.xMorphSpeed;
-  this.hieight = this.height - this.yMorphSpeed;
-  
-  
+function pokeball(startX, startY, size, src) {
+  this.prototype = new gameComponentFromImg(
+    startX, startY, size, src);
+  this.iniX = 2;
+  this.iniY = -10;
+  this.speedX = this.iniX;
+  this.speedY = this.iniY;
+  this.gravity = 2;
+  this.gravitySpeed = 0;
+
+  this.prototype.newPosition = function() {
+    this.gravitySpeed += this.gravity;
+    this.x += this.speedX;
+    this.y += this.speedY + this.gravitySpeed;
+  };
 }
 
 startGame();
