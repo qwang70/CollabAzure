@@ -9,8 +9,8 @@ function CallMyMethod() {
 function CallPageMethod(OnSucceeded, OnFailed) {
     $.ajax({
         type: "POST",
-        url: "inGame.aspx/MyMethod",
-        data: '{name: "' + this.churn + '" }',
+        url: "inGame.aspx/churnAnalysis",
+        data: "{}",
         contentType: "application/json; charset=utf-8",
         dataType: "json",
         success: OnSucceeded,

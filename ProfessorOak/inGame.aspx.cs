@@ -19,7 +19,7 @@ namespace ProfessorOak
 {
     public partial class inGame : System.Web.UI.Page
     {
-        Hero heroGame;
+        static Hero heroGame;
         private static HttpResponseMessage response;
         private string nickname;
         static int churn = 0;
@@ -52,9 +52,9 @@ namespace ProfessorOak
 
         [WebMethod]
         [System.Web.Script.Services.ScriptMethod]
-        public static int churnAnalysis(Hero a)
+        public static int churnAnalysis()
         {
-            InvokeRequestResponseService(a).Wait();
+            InvokeRequestResponseService(heroGame).Wait();
             return churn;
         }
         
