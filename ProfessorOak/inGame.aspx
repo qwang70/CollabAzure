@@ -18,10 +18,6 @@
     </header>
     <body onload="init()">
 	</body>
-    <div class="jumbotron">
-        <input id="Result" type="button" value="button" onclick="CallMyMethod();" />
-
-    </div>
 
     <div >
         <canvas id="background" width="800px" height="500px  style="border:1px solid #000000;" >

@@ -79,9 +79,6 @@ function Game() {
             this.pokeballComponent.init();
             this.pokemonComponent = new PoolPokemon();
             this.pokemonComponent.init();
-            //this.pokemonComponent = new pokemon();
-            //this.pokemonComponent.init(0, Background.prototype.canvasHeight /2, imageRepository.pokemon.width, imageRepository.pokemon.height);
-            //this.pokemonComponent.spawn(4);
 
             return true;
         } else {
@@ -184,6 +181,9 @@ function BallBag() {
             }
             else {
                 //create superball
+                var _ball = new masterball();
+                _ball.init(20, Background.prototype.canvasHeight - 60, imageRepository.masterball.width, imageRepository.masterball.height);
+                this.pool[0] = _ball;
             }
         }
     };
@@ -292,6 +292,65 @@ function pokeball() {
     
 }
 
+
+function masterball() {
+
+    this.active = 1;
+    this.iniX = 2;
+    this.iniY = -20;
+    this.speedX = this.iniX;
+    this.speedY = this.iniY;
+    this.gravity = 0.5;
+    this.gravitySpeed = 0;
+    this.inhand = 1;
+
+    this.draw = function () {
+        this.context.clearRect(this.x, this.y, this.width, this.height);
+        //detectcollision
+        if (this.gravitySpeed > 10) {
+            var myleft = this.x + 10;
+            var myright = this.x + (this.width) - 10;
+            var mytop = this.y + 10;
+            var mybottom = this.y + (this.height) - 10;
+            var len = game.pokemonComponent.pool.length;
+            for (var i = 0; i < len; i++) {
+                var otherobj = game.pokemonComponent.pool[i];
+                var otherleft = otherobj.x;
+                var otherright = otherobj.x + (otherobj.width);
+                var othertop = otherobj.y;
+                var otherbottom = otherobj.y + (otherobj.height);
+                if ((mybottom < othertop) || (mytop > otherbottom) || (myright < otherleft) || (myleft > otherright)) {
+                }
+                else {
+                    currency += 2000;
+                    this.active = 0;
+                    //not disappearing?
+                    game.pokemonComponent.pool[i].goOff = true;
+                    break;
+                }
+            }
+
+        }
+        if (this.active != 0) {
+            if (KEY_STATUS.space || this.inhand == 0) {
+                this.inhand = 0;
+                this.gravitySpeed += this.gravity;
+                this.x += this.speedX;
+                this.y += this.speedY + this.gravitySpeed;
+
+
+            }
+            if (this.x >= masterball.prototype.canvasWidth || (this.y > landPos && this.gravitySpeed > 10)) {
+                this.active = 0;
+            }
+            else {
+                this.context.drawImage(imageRepository.masterball, this.x, this.y);
+            }
+        }
+    };
+
+}
+
 function pokemon() {
     this.alive = false; // Is true if the bullet is currently in use
     this.goOff = false;
@@ -350,10 +409,12 @@ var imageRepository = new function () {
     // Define images
     this.background = new Image();
     this.pokeball = new Image();
+    this.masterball = new Image();
     this.pokemon = new Image(70,70);
     // Set images src
     this.background.src = "Asset/pokemon/background.png";
     this.pokeball.src = "Asset/pokemon/Pokeball.png";
+    this.masterball.src = "Asset/pokemon/masterball.png";
     this.pokemon.src = "Asset/pokemon/pokemon.gif";
     this.pokemon.parent = this;
     this.pokemon.onload = function () {

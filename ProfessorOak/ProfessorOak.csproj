@@ -197,6 +197,7 @@
     <Content Include="Asset\pokemon\exeggutor1.png" />
     <Content Include="Asset\pokemon\koffing1.png" />
     <Content Include="Asset\pokemon\magmeton1.png" />
+    <Content Include="Asset\pokemon\masterball.png" />
     <Content Include="Asset\pokemon\pichu1.png" />
     <Content Include="Asset\pokemon\pika1.png" />
     <Content Include="Asset\pokemon\pika2.png" />
@@ -222,6 +223,9 @@
     <Content Include="fonts\glyphicons-halflings-regular.ttf" />
     <Content Include="fonts\glyphicons-halflings-regular.eot" />
     <Content Include="Account\Web.config" />
+    <None Include="Properties\PublishProfiles\professoroak.pubxml" />
+    <None Include="Properties\PublishProfiles\ProfessorOakGame %282%29.pubxml" />
+    <None Include="Properties\PublishProfiles\ProfessorOakGame %283%29.pubxml" />
     <None Include="Properties\PublishProfiles\ProfessorOakGame.pubxml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="game.js" />
