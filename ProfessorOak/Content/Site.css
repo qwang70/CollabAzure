@@ -41,3 +41,11 @@ input[type="select"] {
     text-align:center;
     }
 }
+
+.huabu {
+  padding: 30px;
+  margin-bottom: 15px;
+  margin-left: 120px;
+  margin-right: 120px;
+  color: inherit;
+}

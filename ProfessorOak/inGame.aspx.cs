@@ -36,12 +36,6 @@ namespace ProfessorOak
             }
         }
 
-        [WebMethod]
-        [System.Web.Script.Services.ScriptMethod]
-        public static void testPage()
-        {
-            System.Diagnostics.Debug.Write("getin");
-        }
 
         [WebMethod]
         [System.Web.Script.Services.ScriptMethod]

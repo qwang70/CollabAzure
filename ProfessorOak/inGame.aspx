@@ -5,12 +5,15 @@
 			canvas {				position: absolute;
 			}
 			#background {
+				z-index: -3;
+			}
+			#line {
 				z-index: -2;
 			}
-			#pokeball {
+			#pokemon {
 				z-index: -1;
 			}
-			#ship {
+			#pokeball {
 				z-index: 0;
 			}
 		</style>
@@ -19,18 +22,19 @@
     <body onload="init()">
 	</body>
 
-    <div >
+    <div class="huabu">
         <canvas id="background" width="800px" height="500px  style="border:1px solid #000000;" >
 			Your browser does not support canvas. Please try again with a different browser.
 		</canvas>
 		<!-- The canvas for all enemy ships and bullets -->
 		<canvas id="pokeball" width="800px" height="500px">
 		</canvas>
+		<canvas id="line" width="800px" height="500px">
+		</canvas>
 		<!-- The canvas the ship uses (can only move up
          one forth the screen.) -->
 		<canvas id="pokemon" width="800px" height="500px">
 		</canvas> 
-        <asp:Literal ID="LiteralSpecial" runat="server"></asp:Literal>
 
     </div>
 </asp:Content>

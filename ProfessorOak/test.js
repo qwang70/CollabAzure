@@ -1,7 +1,7 @@
 ﻿//http://blog.sklambert.com/html5-canvas-game-the-player-ship/
 
 var game;
-var landPos = 240;
+var landPos = 300;
 var churn = 0;
 var currency = 1000;
 var duration = 0;
@@ -11,14 +11,16 @@ function CallMyMethod() {
 }
 
 function CallPageMethod(OnSucceeded, OnFailed) {
-    $.ajax({
-        type: "POST",
-        url: "inGame.aspx/churnAnalysis",
-        data: "{ c: '" + currency  + "',d:'"+ duration + "'}",
-        contentType: "application/json; charset=utf-8",
-        dataType: "json",
-        success: OnSucceeded,
-        fail: OnFailed
+    $(document).ready(function(){
+        $.ajax({
+            type: "POST",
+            url: "inGame.aspx/churnAnalysis",
+            data: "{ c: '" + currency  + "',d:'"+ duration + "'}",
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            success: OnSucceeded,
+            fail: OnFailed
+        });
     });
 }
 
@@ -31,6 +33,13 @@ function init() {
     if (game.init())
         game.start();
 }
+
+// Set Background to inherit properties from Drawable
+Background.prototype = new Drawable();
+pokeball.prototype = new Drawable();
+pokemon.prototype = new Drawable();
+masterball.prototype = new Drawable();
+goLine.prototype = new Drawable();
 
 
 /**
@@ -51,11 +60,14 @@ function Game() {
         this.bgpokeball = document.getElementById('pokeball');
         this.bgmasterball = document.getElementById('pokeball');
         this.bgpokemon = document.getElementById('pokemon');
+        this.bggoLine = document.getElementById('pokemon');
         // Test to see if canvas is supported
         if (this.bgCanvas.getContext) {
             this.bgContext = this.bgCanvas.getContext('2d');
             this.bgpokeball = this.bgpokeball.getContext('2d');
+            this.bgmasterball = this.bgmasterball.getContext('2d');
             this.bgpokemon = this.bgpokemon.getContext('2d');
+            this.bggoLine = this.bggoLine.getContext('2d');
             // Initialize objects to contain their context and canvas
             // information
             Background.prototype.context = this.bgContext;
@@ -70,6 +82,9 @@ function Game() {
             pokemon.prototype.context = this.bgpokemon;
             pokemon.prototype.canvasWidth = this.bgpokemon.width;
             pokemon.prototype.canvasHeight = this.bgpokemon.height;
+            goLine.prototype.context = this.bggoLine;
+            goLine.prototype.canvasWidth = this.bggoLine.width;
+            goLine.prototype.canvasHeight = this.bggoLine.height;
             // Initialize the background object
             this.background = new Background();
             this.background.init(0, 0, 0, 0); // Set draw point to 0,0
@@ -79,6 +94,11 @@ function Game() {
             this.pokeballComponent.init();
             this.pokemonComponent = new PoolPokemon();
             this.pokemonComponent.init();
+
+            this.goLine = new goLine();
+            this.goLine.init(game.pokeballComponent.pool[0].x + game.pokeballComponent.pool[0].width / 2,
+                game.pokeballComponent.pool[0].y + game.pokeballComponent.pool[0].height / 2,
+                1000, 1000); // Set draw point to 0,0
 
             return true;
         } else {
@@ -174,7 +194,7 @@ function BallBag() {
         if (!this.pool[size - 1].active) {
             this.pool[size - 1] = null;
             CallMyMethod();
-            if (churn == 0) {
+            if (churn == 0 && Math.random()> 0.07) {
                 var _ball = new pokeball();
                 _ball.init(20, Background.prototype.canvasHeight - 60, imageRepository.pokeball.width, imageRepository.pokeball.height);
                 this.pool[0] = _ball;
@@ -206,7 +226,6 @@ function BallBag() {
 }
 
 function Background() {
-    this.speed = 0; // Redefine speed of the background for panning
     // Implement abstract function
     this.draw = function () {
 
@@ -225,12 +244,12 @@ function Background() {
         */
     };
 }
-// Set Background to inherit properties from Drawable
-Background.prototype = new Drawable();
-pokeball.prototype = new Drawable();
-pokemon.prototype = new Drawable();
-masterball.prototype = new Drawable();
 
+function goLine() {
+    this.draw = function () {
+        drawDashLine(game.bggoLine, this.x, this.y, 300, Background.prototype.canvasHeight-duration, 5);
+    }
+}
 
 
 
@@ -248,7 +267,7 @@ function pokeball() {
     this.draw = function () {
         this.context.clearRect(this.x, this.y, this.width, this.height);
         //detectcollision
-            if(this.gravitySpeed > 10){
+            if(this.gravitySpeed > 20){
                 var myleft = this.x + 10;
                 var myright = this.x + (this.width) - 10;
                 var mytop = this.y + 10;
@@ -281,7 +300,7 @@ function pokeball() {
 
 
                 }
-                if (this.x >= pokeball.prototype.canvasWidth || (this.y > landPos && this.gravitySpeed > 10)) {
+                if (this.x >= pokeball.prototype.canvasWidth || (this.y > landPos && this.gravitySpeed > 20)) {
                     this.active = 0;
                 }
                 else {
@@ -291,7 +310,6 @@ function pokeball() {
     };
     
 }
-
 
 function masterball() {
 
@@ -305,9 +323,9 @@ function masterball() {
     this.inhand = 1;
 
     this.draw = function () {
-        this.context.clearRect(this.x, this.y, this.width, this.height);
+        this.context.clearRect(this.x, this.y, this.width, this.height, 100, 100);
         //detectcollision
-        if (this.gravitySpeed > 10) {
+        if (this.gravitySpeed > 20) {
             var myleft = this.x + 10;
             var myright = this.x + (this.width) - 10;
             var mytop = this.y + 10;
@@ -340,11 +358,11 @@ function masterball() {
 
 
             }
-            if (this.x >= masterball.prototype.canvasWidth || (this.y > landPos && this.gravitySpeed > 10)) {
+            if (this.x >= masterball.prototype.canvasWidth || (this.y > landPos && this.gravitySpeed > 20)) {
                 this.active = 0;
             }
             else {
-                this.context.drawImage(imageRepository.masterball, this.x, this.y);
+                this.context.drawImage(imageRepository.masterball, this.x, this.y, 100, 100);
             }
         }
     };
@@ -409,7 +427,7 @@ var imageRepository = new function () {
     // Define images
     this.background = new Image();
     this.pokeball = new Image();
-    this.masterball = new Image();
+    this.masterball = new Image(100,100);
     this.pokemon = new Image(70,70);
     // Set images src
     this.background.src = "Asset/pokemon/background.png";
@@ -421,6 +439,10 @@ var imageRepository = new function () {
         this.width = 70;
         this.height = 70
     }
+    /*this.masterball.onload = function () {
+        this.width = 100;
+        this.height = 100
+    }*/
 }
 
 /**
@@ -437,7 +459,6 @@ function Drawable() {
         this.width = width;
         this.height = height;
     }
-    this.speed = 0;
     this.canvasWidth = 0;
     this.canvasHeight = 0;
     // Define abstract function to be implemented in child objects
@@ -456,6 +477,7 @@ function animate() {
     game.background.draw();
     game.pokeballComponent.animate();
     game.pokemonComponent.animate();
+    game.goLine.draw();
     duration++;
 }
 /**
@@ -475,11 +497,33 @@ window.requestAnimFrame = (function () {
 })();
 
 
+function getBeveling(x, y) {
+    return Math.sqrt(Math.pow(x, 2) + Math.pow(y, 2));
+}
+
+function drawDashLine(context, x1, y1, x2, y2, dashLen) {
+
+    context.clearRect(100, 300, 300, 300);
+    dashLen = dashLen === undefined ? 5 : dashLen;
+    //得到斜边的总长度
+    var beveling = getBeveling(x2 - x1, y2 - y1);
+    //计算有多少个线段
+    var num = Math.floor(beveling / dashLen);
+
+    for (var i = 0 ; i < num; i++) {
+        context[i % 2 == 0 ? 'moveTo' : 'lineTo'](x1 + (x2 - x1) / num * i, y1 + (y2 - y1) / num * i);
+    }
+    context.stroke();
+}
+
+
+
 // Callback function invoked on successful 
 // completion of the page method.
 function OnSucceeded(result, userContext, methodName) {
     //alert(result);
-     churn = result.d;
+    churn = result.d;
+    churn = 1;
 
 }
 
