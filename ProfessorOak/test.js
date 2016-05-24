@@ -1,17 +1,20 @@
 ﻿//http://blog.sklambert.com/html5-canvas-game-the-player-ship/
-function DoClick() {
-    Form1.Message.value = 'Text from javascript';
-};
+
+var game;
+var landPos = 240;
+var churn = 0;
+var currency = 1000;
+var duration = 0;
 
 function CallMyMethod() {
-    CallPageMethod(OnSucceeded, OnFailed);
+     CallPageMethod(OnSucceeded, OnFailed);
 }
 
 function CallPageMethod(OnSucceeded, OnFailed) {
     $.ajax({
         type: "POST",
         url: "inGame.aspx/churnAnalysis",
-        data: "{}",
+        data: "{ c: '" + currency  + "',d:'"+ duration + "'}",
         contentType: "application/json; charset=utf-8",
         dataType: "json",
         success: OnSucceeded,
@@ -22,10 +25,6 @@ function CallPageMethod(OnSucceeded, OnFailed) {
 /**
  * Initialize the Game and starts it.
  */
-var game ;
-var landPos = 240;
-var churn = 0;
-
 
 function init() {
     game = new Game();
@@ -50,6 +49,7 @@ function Game() {
         // Get the canvas element
         this.bgCanvas = document.getElementById('background');
         this.bgpokeball = document.getElementById('pokeball');
+        this.bgmasterball = document.getElementById('pokeball');
         this.bgpokemon = document.getElementById('pokemon');
         // Test to see if canvas is supported
         if (this.bgCanvas.getContext) {
@@ -64,6 +64,9 @@ function Game() {
             pokeball.prototype.context = this.bgpokeball;
             pokeball.prototype.canvasWidth = this.bgpokeball.width;
             pokeball.prototype.canvasHeight = this.bgpokeball.height;
+            masterball.prototype.context = this.bgmasterball;
+            masterball.prototype.canvasWidth = this.bgmasterball.width;
+            masterball.prototype.canvasHeight = this.bgmasterball.height;
             pokemon.prototype.context = this.bgpokemon;
             pokemon.prototype.canvasWidth = this.bgpokemon.width;
             pokemon.prototype.canvasHeight = this.bgpokemon.height;
@@ -72,8 +75,8 @@ function Game() {
             this.background.init(0, 0, 0, 0); // Set draw point to 0,0
 
             //Load pokeball and pokemon
-            this.pokeballComponent = new pokeball();
-            this.pokeballComponent.init(20, Background.prototype.canvasHeight - 60, imageRepository.pokeball.width, imageRepository.pokeball.height);
+            this.pokeballComponent = new BallBag();
+            this.pokeballComponent.init();
             this.pokemonComponent = new PoolPokemon();
             this.pokemonComponent.init();
             //this.pokemonComponent = new pokemon();
@@ -94,7 +97,7 @@ function Game() {
 
 function PoolPokemon() {
     var size = 3; // Max bullets allowed in the pool
-    var pool = [];
+    this.pool = [];
     var count = 1;
     /*
 	 * Populates the pool array with Bullet objects
@@ -104,7 +107,7 @@ function PoolPokemon() {
             // Initalize the bullet object
             var _pokemon = new pokemon();
             _pokemon.init(0, Background.prototype.canvasHeight /2, imageRepository.pokemon.width, imageRepository.pokemon.height);
-            pool[i] = _pokemon;
+            this.pool[i] = _pokemon;
         }
     };
     /*
@@ -122,9 +125,9 @@ function PoolPokemon() {
             
             x = (-1)*((Math.random() * 5) + 1);
         }
-        if (!pool[size - 1].alive) {
-            pool[size - 1].spawn(x);
-            pool.unshift(pool.pop());
+        if (!this.pool[size - 1].alive) {
+            this.pool[size - 1].spawn(x);
+            this.pool.unshift(this.pool.pop());
         }
     };
     /*
@@ -136,10 +139,9 @@ function PoolPokemon() {
         count+=1;
         for (var i = 0; i < size; i++) {
             // Only draw until we find a bullet that is not alive
-            if (pool[i].alive) {
-                if (pool[i].draw()) {
-                    pool[i].clear();
-                    pool.push((pool.splice(i, 1))[0]);
+            if (this.pool[i].alive) {
+                if (this.pool[i].draw()) {
+                    this.pool.push((this.pool.splice(i, 1))[0]);
                 }
             }
             else {
@@ -153,6 +155,55 @@ function PoolPokemon() {
     };
 }
 
+function BallBag() {
+    var size = 1; // Max bullets allowed in the pool
+    this.pool = [];
+    /*
+	 * Populates the pool array with Bullet objects
+	 */
+    this.init = function () {
+        for (var i = 0; i < size; i++) {
+            // Initalize the bullet object
+            var _ball = new pokeball();
+            _ball.init(20, Background.prototype.canvasHeight - 60, imageRepository.pokeball.width, imageRepository.pokeball.height);
+            this.pool[i] = _ball;
+        }
+    };
+    /*
+	 * Grabs the last item in the list and initializes it and
+	 * pushes it to the front of the array.
+	 */
+    this.get = function () {
+        if (!this.pool[size - 1].active) {
+            this.pool[size - 1] = null;
+            CallMyMethod();
+            if (churn == 0) {
+                var _ball = new pokeball();
+                _ball.init(20, Background.prototype.canvasHeight - 60, imageRepository.pokeball.width, imageRepository.pokeball.height);
+                this.pool[0] = _ball;
+            }
+            else {
+                //create superball
+            }
+        }
+    };
+    /*
+	 * Draws any in use Bullets. If a bullet goes off the screen,
+	 * clears it and pushes it to the front of the array.
+	 */
+    this.animate = function () {
+        for (var i = 0; i < size; i++) {
+            // Only draw until we find a bullet that is not alive
+            if (this.pool[i].active) {
+                this.pool[i].draw();
+            }
+            else {
+
+                    this.get();
+            }
+        }
+    };
+}
 
 function Background() {
     this.speed = 0; // Redefine speed of the background for panning
@@ -178,12 +229,14 @@ function Background() {
 Background.prototype = new Drawable();
 pokeball.prototype = new Drawable();
 pokemon.prototype = new Drawable();
+masterball.prototype = new Drawable();
 
 
 
 
 function pokeball() {
 
+    this.active = 1;
     this.iniX = 2;
     this.iniY = -20;
     this.speedX = this.iniX;
@@ -194,27 +247,54 @@ function pokeball() {
 
     this.draw = function () {
         this.context.clearRect(this.x, this.y, this.width, this.height);
+        //detectcollision
+            if(this.gravitySpeed > 10){
+                var myleft = this.x + 10;
+                var myright = this.x + (this.width) - 10;
+                var mytop = this.y + 10;
+                var mybottom = this.y + (this.height) -10;
+                var len = game.pokemonComponent.pool.length;
+                for (var i = 0; i < len; i++) {
+                    var otherobj = game.pokemonComponent.pool[i];
+                    var otherleft = otherobj.x;
+                    var otherright = otherobj.x + (otherobj.width);
+                    var othertop = otherobj.y;
+                    var otherbottom = otherobj.y + (otherobj.height);
+                    if ((mybottom < othertop) || (mytop > otherbottom) || (myright < otherleft) || (myleft > otherright)) {
+                    }
+                    else{
+                        currency += 2000;
+                        this.active = 0;
+                        //not disappearing?
+                        game.pokemonComponent.pool[i].goOff = true;
+                        break;
+                    }
+                }
+                
+            }
+            if (this.active != 0) {
+                if (KEY_STATUS.space || this.inhand == 0) {
+                    this.inhand = 0;
+                    this.gravitySpeed += this.gravity;
+                    this.x += this.speedX;
+                    this.y += this.speedY + this.gravitySpeed;
 
-        if (KEY_STATUS.space||this.inhand ==0) {
-            this.inhand = 0;
-            this.gravitySpeed += this.gravity;
-            this.x += this.speedX;
-            this.y += this.speedY + this.gravitySpeed;
 
-
-        }
-        if (this.x >= pokeball.prototype.canvasWidth || (this.y > landPos && this.gravitySpeed > 5)) {
-            this.inhand = 1;
-        }
-        else{
-            this.context.drawImage(imageRepository.pokeball, this.x, this.y);
-        }
+                }
+                if (this.x >= pokeball.prototype.canvasWidth || (this.y > landPos && this.gravitySpeed > 10)) {
+                    this.active = 0;
+                }
+                else {
+                    this.context.drawImage(imageRepository.pokeball, this.x, this.y);
+                }
+            }
     };
     
 }
 
 function pokemon() {
     this.alive = false; // Is true if the bullet is currently in use
+    this.goOff = false;
     /*
 	 * Sets the bullet values
 	 */
@@ -239,12 +319,12 @@ function pokemon() {
     this.draw = function () {
         this.context.clearRect(this.x, this.y, this.width, this.height);
         this.x += this.speed;
-        if (this.x <= 0 - this.width || this.x >= Background.prototype.canvasWidth + this.width) {
+        if (this.x <= 0 - this.width || this.x >= Background.prototype.canvasWidth + this.width || this.goOff == true) {
             this.clear();
             return true;
         }
         else {
-            this.context.drawImage(imageRepository.pokemon, this.x, this.y, 100, 100);
+            this.context.drawImage(imageRepository.pokemon, this.x, this.y, 70, 70);
         }
     };
     /*
@@ -254,6 +334,7 @@ function pokemon() {
         this.x = 0;
         this.speed = 0;
         this.alive = false;
+        this.goOff = false;
     };
 }
 
@@ -269,15 +350,15 @@ var imageRepository = new function () {
     // Define images
     this.background = new Image();
     this.pokeball = new Image();
-    this.pokemon = new Image(100,100);
+    this.pokemon = new Image(70,70);
     // Set images src
     this.background.src = "Asset/pokemon/background.png";
     this.pokeball.src = "Asset/pokemon/Pokeball.png";
     this.pokemon.src = "Asset/pokemon/pokemon.gif";
     this.pokemon.parent = this;
     this.pokemon.onload = function () {
-        this.width = 100;
-        this.height = 100
+        this.width = 70;
+        this.height = 70
     }
 }
 
@@ -312,8 +393,9 @@ function Drawable() {
 function animate() {
     requestAnimFrame(animate);
     game.background.draw();
-    game.pokeballComponent.draw();
+    game.pokeballComponent.animate();
     game.pokemonComponent.animate();
+    duration++;
 }
 /**
  * requestAnim shim layer by Paul Irish
@@ -336,16 +418,14 @@ window.requestAnimFrame = (function () {
 // completion of the page method.
 function OnSucceeded(result, userContext, methodName) {
     //alert(result);
-    window.alert(result.d);
-    console.log(10);
+     churn = result.d;
 
 }
 
 // Callback function invoked on failure 
 // of the page method.
 function OnFailed(error, userContext, methodName) {
-    window.alert(6 + 6);
-    console.log(1000);
+    window.alert("Fail churn");
 
 }
 // The keycodes that will be mapped when a user presses a button.

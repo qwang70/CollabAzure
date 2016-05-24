@@ -52,8 +52,12 @@ namespace ProfessorOak
 
         [WebMethod]
         [System.Web.Script.Services.ScriptMethod]
-        public static int churnAnalysis()
+        public static int churnAnalysis(int c, int d)
         {
+            heroGame.currency = c;
+            heroGame.duration = d;
+
+            System.Diagnostics.Debug.Write("currency: " + heroGame.currency);
             InvokeRequestResponseService(heroGame).Wait();
             return churn;
         }
@@ -110,7 +114,7 @@ namespace ProfessorOak
                     int label = Int32.Parse(items[9].ToString());
                     double scoreProb = Double.Parse(items[10].ToString());
 
-                    System.Diagnostics.Debug.Write("scoreProb:\t{0,8:c}" + scoreProb);
+                    System.Diagnostics.Debug.Write("scoreProb: " + scoreProb);
 
                     //  Indicate whether the user churn
                     if (label == 1)
