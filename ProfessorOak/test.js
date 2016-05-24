@@ -22,13 +22,13 @@ function CallPageMethod(OnSucceeded, OnFailed) {
 /**
  * Initialize the Game and starts it.
  */
-var game = new Game();
+var game ;
 var landPos = 240;
 var churn = 0;
 
 
 function init() {
-
+    game = new Game();
     if (game.init())
         game.start();
 }
@@ -74,9 +74,11 @@ function Game() {
             //Load pokeball and pokemon
             this.pokeballComponent = new pokeball();
             this.pokeballComponent.init(20, Background.prototype.canvasHeight - 60, imageRepository.pokeball.width, imageRepository.pokeball.height);
-            this.pokemonComponent = new pokemon();
-            this.pokemonComponent.init(0, Background.prototype.canvasHeight * 2 / 3, imageRepository.pokemon.width, imageRepository.pokemon.height);
-            this.pokemonComponent.spawn(4);
+            this.pokemonComponent = new PoolPokemon();
+            this.pokemonComponent.init();
+            //this.pokemonComponent = new pokemon();
+            //this.pokemonComponent.init(0, Background.prototype.canvasHeight /2, imageRepository.pokemon.width, imageRepository.pokemon.height);
+            //this.pokemonComponent.spawn(4);
 
             return true;
         } else {
@@ -89,6 +91,68 @@ function Game() {
         animate();
     };
 }
+
+function PoolPokemon() {
+    var size = 3; // Max bullets allowed in the pool
+    var pool = [];
+    var count = 1;
+    /*
+	 * Populates the pool array with Bullet objects
+	 */
+    this.init = function () {
+        for (var i = 0; i < size; i++) {
+            // Initalize the bullet object
+            var _pokemon = new pokemon();
+            _pokemon.init(0, Background.prototype.canvasHeight /2, imageRepository.pokemon.width, imageRepository.pokemon.height);
+            pool[i] = _pokemon;
+        }
+    };
+    /*
+	 * Grabs the last item in the list and initializes it and
+	 * pushes it to the front of the array.
+	 */
+    this.get = function () {
+        var temp = Math.round(Math.random());
+        var x;
+        if(temp == 0){
+            
+            x = (Math.random() * 5) + 1;
+        }
+        else{
+            
+            x = (-1)*((Math.random() * 5) + 1);
+        }
+        if (!pool[size - 1].alive) {
+            pool[size - 1].spawn(x);
+            pool.unshift(pool.pop());
+        }
+    };
+    /*
+	 * Draws any in use Bullets. If a bullet goes off the screen,
+	 * clears it and pushes it to the front of the array.
+	 */
+    this.animate = function () {
+        var temp = Math.round(Math.random() * 50) + 100;
+        count+=1;
+        for (var i = 0; i < size; i++) {
+            // Only draw until we find a bullet that is not alive
+            if (pool[i].alive) {
+                if (pool[i].draw()) {
+                    pool[i].clear();
+                    pool.push((pool.splice(i, 1))[0]);
+                }
+            }
+            else {
+                if (count > temp) {
+
+                    this.get();
+                    count = 1;
+                }
+            }
+        }
+    };
+}
+
 
 function Background() {
     this.speed = 0; // Redefine speed of the background for panning
@@ -160,7 +224,7 @@ function pokemon() {
         }
         else {
 
-            this.x = bgpokemon.prototype.canvasWidth - this.x;
+            this.x = Background.prototype.canvasWidth - this.x;
         }
 
         this.speed = speed;
@@ -175,11 +239,12 @@ function pokemon() {
     this.draw = function () {
         this.context.clearRect(this.x, this.y, this.width, this.height);
         this.x += this.speed;
-        if (this.x <= 0 - this.width || this.x >= pokemon.prototype.canvasWidth + this.width) {
+        if (this.x <= 0 - this.width || this.x >= Background.prototype.canvasWidth + this.width) {
+            this.clear();
             return true;
         }
         else {
-            this.context.drawImage(imageRepository.pokemon, this.x, this.y);
+            this.context.drawImage(imageRepository.pokemon, this.x, this.y, 100, 100);
         }
     };
     /*
@@ -187,7 +252,6 @@ function pokemon() {
 	 */
     this.clear = function () {
         this.x = 0;
-        this.y = 0;
         this.speed = 0;
         this.alive = false;
     };
@@ -205,13 +269,16 @@ var imageRepository = new function () {
     // Define images
     this.background = new Image();
     this.pokeball = new Image();
-    this.pokemon = new Image();
+    this.pokemon = new Image(100,100);
     // Set images src
     this.background.src = "Asset/pokemon/background.png";
     this.pokeball.src = "Asset/pokemon/Pokeball.png";
     this.pokemon.src = "Asset/pokemon/pokemon.gif";
-    this.pokemon.width = 100;
-    this.pokemon.height = 100;
+    this.pokemon.parent = this;
+    this.pokemon.onload = function () {
+        this.width = 100;
+        this.height = 100
+    }
 }
 
 /**
@@ -246,7 +313,7 @@ function animate() {
     requestAnimFrame(animate);
     game.background.draw();
     game.pokeballComponent.draw();
-    game.pokemonComponent.draw();
+    game.pokemonComponent.animate();
 }
 /**
  * requestAnim shim layer by Paul Irish
