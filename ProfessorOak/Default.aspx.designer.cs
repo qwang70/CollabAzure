@@ -121,21 +121,48 @@ namespace ProfessorOak {
         protected global::System.Web.UI.WebControls.View View2;
         
         /// <summary>
-        /// View3 control.
+        /// player1 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.View View3;
+        protected global::System.Web.UI.WebControls.Button player1;
         
         /// <summary>
-        /// LiteralSpecial control.
+        /// player2 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Literal LiteralSpecial;
+        protected global::System.Web.UI.WebControls.Button player2;
+        
+        /// <summary>
+        /// player3 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button player3;
+        
+        /// <summary>
+        /// player4 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button player4;
+        
+        /// <summary>
+        /// player5 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button player5;
     }
 }

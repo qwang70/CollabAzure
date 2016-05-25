@@ -33,7 +33,7 @@ public class Hero
         this.churn = r.Next(0, 1);
         this.weapon = 1;
         this.rank = 200;
-        this.interdays = 1;
+        this.interdays = 3;
     }
     public Hero(string nickname, int age, int negT, int posT, int duration, int currency, int weapon, int rank, int interdays)
     {

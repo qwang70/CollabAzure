@@ -12,8 +12,11 @@
                 <img src="Asset/damu/logo.png" width="220px" align="right" />
                 <font face="Comic sans MS"><h2>Game Rule:</h2>
                 <p class="lead">Just guess what Pokemon Professor Oak might choose.<br>
-                    GAME OVER when the player gets negative points, OR the player gets TIRED of the game.<br>
-                    Enjoy!
+                    Press [SPACE] to throw the pokemon ball.<br>
+                    <br>
+                    GAME OVER when the player couldn't get enough point, OR the player gets TIRED of the game.<br>
+                    <br>
+                    Enjoy!<br>
                 </p>
                     </font>
             </div>
@@ -26,7 +29,7 @@
                     <asp:Button ID="NewGame" runat="server" class="btn btn-warning btn-lg" Text="New Game" OnClick="NewGame_Click"/>
                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                    <asp:Button ID="LoadGame" runat="server" class="btn btn-warning btn-lg" Text="Load Game"/>
+                    <asp:Button ID="LoadGame" runat="server" class="btn btn-warning btn-lg" Text="Load Game" OnClick="LoadGame_Click"/>
                 </center>
          </asp:View>
 
@@ -81,23 +84,20 @@
 
         <!--LoadFakeInfo-->
          <asp:View ID="View2" runat="server">
+            <div class="jumbotron" style="font-size: x-large">
+                  <div class="row">
+                    <asp:Button ID="player1" runat="server" class="btn btn-default btn-lg btn-block" Text="Player: Pikachu   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;       Saved 2 day before" OnClick="interday2" />
+                    <asp:Button ID="player2" runat="server" class="btn btn-default btn-lg btn-block" Text="Player: Raichu     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;      Saved 2 day before" OnClick="interday2"/>
+                    <asp:Button ID="player3" runat="server" class="btn btn-default btn-lg btn-block" Text="Player: Dugtrio    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;    Saved 4 day before" OnClick="interday4"/>
+                    <asp:Button ID="player4" runat="server" class="btn btn-default btn-lg btn-block" Text="Player: Charizard    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;    Saved 6 day before" OnClick="interday6"/>
+                    <asp:Button ID="player5" runat="server" class="btn btn-default btn-lg btn-block" Text="Player: Chamander     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;     Saved 7 day before" OnClick="interday7"/>
+                  </div>
+             </div>
+             
          </asp:View>
         
         <!--LoadFakeInfo-->
-         <asp:View ID="View3" runat="server">
-       
-                 <body onload="init()">
-	            </body>
-             
-             <div class="jumbotron">
-                 <canvas id="background" width="1000px" height="1000px" style="border:1px solid #000000;">
-
-                 </canvas> 
-                 <asp:Literal ID="LiteralSpecial" runat="server"></asp:Literal>
-                 
-             </div>
-           
-         </asp:View>
+         
     </asp:MultiView>
 
 

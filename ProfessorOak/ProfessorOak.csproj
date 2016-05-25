@@ -176,6 +176,7 @@
     <Content Include="Account\TwoFactorAuthenticationSignIn.aspx" />
     <Content Include="Account\VerifyPhoneNumber.aspx" />
     <Content Include="Asset\bgimg.jpg" />
+    <Content Include="Asset\countdown.jpg" />
     <Content Include="Asset\damu\correct.jpg" />
     <Content Include="Asset\damu\logo.png" />
     <Content Include="Asset\damu\oshie.gif" />
@@ -210,6 +211,7 @@
     <Content Include="Asset\pokemon\tumblr_ln02owjkxA1qg0dcvo1_400.gif" />
     <Content Include="Asset\pokemon\voltorb1.png" />
     <Content Include="Asset\pokemon\weezing1.png" />
+    <Content Include="Asset\scoreboard.jpg" />
     <Content Include="Asset\titleBlue.png" />
     <Content Include="Asset\titlePink.png" />
     <Content Include="Contact.aspx" />
@@ -226,6 +228,8 @@
     <None Include="Properties\PublishProfiles\professoroak.pubxml" />
     <None Include="Properties\PublishProfiles\ProfessorOakGame %282%29.pubxml" />
     <None Include="Properties\PublishProfiles\ProfessorOakGame %283%29.pubxml" />
+    <None Include="Properties\PublishProfiles\ProfessorOakGame %284%29.pubxml" />
+    <None Include="Properties\PublishProfiles\ProfessorOakGame %285%29.pubxml" />
     <None Include="Properties\PublishProfiles\ProfessorOakGame.pubxml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="game.js" />

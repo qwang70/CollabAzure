@@ -45,7 +45,15 @@ input[type="select"] {
 .huabu {
   padding: 30px;
   margin-bottom: 15px;
-  margin-left: 120px;
-  margin-right: 120px;
+  margin-left: 150px;
+  margin-right: 150px;
   color: inherit;
 }
+
+#share-buttons img { 
+width: 35px; 
+padding: 5px; 
+border: 0; 
+box-shadow: 0; 
+display: inline; 
+} 

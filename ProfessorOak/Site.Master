@@ -55,9 +55,46 @@
                         <li><a runat="server" href="~/">Home</a></li>
                         <li><a runat="server" href="~/About">About</a></li>
                         <li><a runat="server" href="~/Contact">Contact</a></li>
+
                     </ul>
+                    
+                            <ul class="nav navbar-nav navbar-right">
+                                 <div id="share-buttons"> 
+
+                                    <!-- Facebook --> 
+                                    <a href="http://www.facebook.com/sharer.php?u=http://professoroakgame.azurewebsites.net/" target="_blank"> 
+                                        <img src="https://simplesharebuttons.com/images/somacro/facebook.png" alt="Facebook" /> 
+                                    </a> 
+      
+                                     <!-- Google+ --> 
+                                    <a href="https://plus.google.com/share?url=http://professoroakgame.azurewebsites.net/" target="_blank"> 
+                                         <img src="https://simplesharebuttons.com/images/somacro/google.png" alt="Google" /> 
+                                     </a> 
+      
+                                     <!-- LinkedIn --> 
+                                    <a href="http://www.linkedin.com/shareArticle?mini=true&amp;url=http://professoroakgame.azurewebsites.net/" target="_blank"> 
+                                         <img src="https://simplesharebuttons.com/images/somacro/linkedin.png" alt="LinkedIn" /> 
+                                     </a> 
+      
+                                     <!-- Reddit --> 
+                                     <a href="http://reddit.com/submit?url=http://professoroakgame.azurewebsites.net/&amp;title=Professor Oak Game" target="_blank"> 
+                                                  <img src="https://simplesharebuttons.com/images/somacro/reddit.png" alt="Reddit" /> 
+                                     </a> 
+      
+      
+                                     <!-- Tumblr--> 
+                                     <a href="http://www.tumblr.com/share/link?url=https://simplesharebuttons.com&amp;title=Simple Share Buttons" target="_blank"> 
+                                         <img src="https://simplesharebuttons.com/images/somacro/tumblr.png" alt="Tumblr" /> 
+                                     </a> 
+       
+                                     <!-- Twitter --> 
+                                     <a href="https://twitter.com/share?url=https://simplesharebuttons.com&amp;text=Simple%20Share%20Buttons&amp;hashtags=simplesharebuttons" target="_blank"> 
+                                         <img src="https://simplesharebuttons.com/images/somacro/twitter.png" alt="Twitter" /> 
+                                     </a> 
+                                </div>
+                                </ul>
                     <asp:LoginView runat="server" ViewStateMode="Disabled">
-                        <AnonymousTemplate>s
+                        <AnonymousTemplate>
                             <ul class="nav navbar-nav navbar-right">
                                 <li><a runat="server" href="~/Account/Register">Register</a></li>
                                 <li><a runat="server" href="~/Account/Login">Log in</a></li>
@@ -88,7 +125,7 @@
             <asp:ContentPlaceHolder ID="MainContent" runat="server">
             </asp:ContentPlaceHolder>
             
-        </div>
+        </div> 
     </form>
 </body>
 </html>

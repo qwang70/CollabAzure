@@ -3,8 +3,11 @@
 var game;
 var landPos = 300;
 var churn = 0;
-var currency = 1000;
-var duration = 0;
+var currency;
+var duration =0;
+var countdown;
+var countframe;
+var level
 
 function CallMyMethod() {
      CallPageMethod(OnSucceeded, OnFailed);
@@ -27,9 +30,18 @@ function CallPageMethod(OnSucceeded, OnFailed) {
 /**
  * Initialize the Game and starts it.
  */
+function newGame() {
+
+    currency = 100;
+    level = 1;
+    game = new Game();
+    init();
+}
 
 function init() {
-    game = new Game();
+    /////////////////////////////////////////////////////
+    countdown = 60;
+    countframe = 0;
     if (game.init())
         game.start();
 }
@@ -39,7 +51,7 @@ Background.prototype = new Drawable();
 pokeball.prototype = new Drawable();
 pokemon.prototype = new Drawable();
 masterball.prototype = new Drawable();
-goLine.prototype = new Drawable();
+judge.prototype = new Drawable();
 
 
 /**
@@ -60,14 +72,12 @@ function Game() {
         this.bgpokeball = document.getElementById('pokeball');
         this.bgmasterball = document.getElementById('pokeball');
         this.bgpokemon = document.getElementById('pokemon');
-        this.bggoLine = document.getElementById('pokemon');
         // Test to see if canvas is supported
         if (this.bgCanvas.getContext) {
             this.bgContext = this.bgCanvas.getContext('2d');
             this.bgpokeball = this.bgpokeball.getContext('2d');
             this.bgmasterball = this.bgmasterball.getContext('2d');
             this.bgpokemon = this.bgpokemon.getContext('2d');
-            this.bggoLine = this.bggoLine.getContext('2d');
             // Initialize objects to contain their context and canvas
             // information
             Background.prototype.context = this.bgContext;
@@ -82,12 +92,14 @@ function Game() {
             pokemon.prototype.context = this.bgpokemon;
             pokemon.prototype.canvasWidth = this.bgpokemon.width;
             pokemon.prototype.canvasHeight = this.bgpokemon.height;
-            goLine.prototype.context = this.bggoLine;
-            goLine.prototype.canvasWidth = this.bggoLine.width;
-            goLine.prototype.canvasHeight = this.bggoLine.height;
+            judge.prototype.context = this.bgpokemon;
+            judge.prototype.canvasWidth = this.bgpokemon.width;
+            judge.prototype.canvasHeight = this.bgpokemon.height;
             // Initialize the background object
             this.background = new Background();
             this.background.init(0, 0, 0, 0); // Set draw point to 0,0
+
+            this.judge = new judge();
 
             //Load pokeball and pokemon
             this.pokeballComponent = new BallBag();
@@ -95,10 +107,7 @@ function Game() {
             this.pokemonComponent = new PoolPokemon();
             this.pokemonComponent.init();
 
-            this.goLine = new goLine();
-            this.goLine.init(game.pokeballComponent.pool[0].x + game.pokeballComponent.pool[0].width / 2,
-                game.pokeballComponent.pool[0].y + game.pokeballComponent.pool[0].height / 2,
-                1000, 1000); // Set draw point to 0,0
+            cleancanvas();
 
             return true;
         } else {
@@ -112,6 +121,12 @@ function Game() {
     };
 }
 
+function cleancanvas() {
+    game.bgContext.clearRect(0, 0, Background.prototype.canvasWidth, Background.prototype.canvasHeight);
+    game.bgpokeball.clearRect(0, 0, Background.prototype.canvasWidth, Background.prototype.canvasHeight);
+    game.bgpokemon.clearRect(0, 0, Background.prototype.canvasWidth, Background.prototype.canvasHeight);
+}
+
 function PoolPokemon() {
     var size = 3; // Max bullets allowed in the pool
     this.pool = [];
@@ -122,8 +137,8 @@ function PoolPokemon() {
     this.init = function () {
         for (var i = 0; i < size; i++) {
             // Initalize the bullet object
-            var _pokemon = new pokemon();
-            _pokemon.init(0, Background.prototype.canvasHeight /2, imageRepository.pokemon.width, imageRepository.pokemon.height);
+            var _pokemon = new pokemon(Math.floor(Math.random()*5.9));
+            _pokemon.init(0, Background.prototype.canvasHeight *7/16 + Math.round(Math.random()*200)-100, imageRepository.pokemon[0].width, imageRepository.pokemon[0].height);
             this.pool[i] = _pokemon;
         }
     };
@@ -194,7 +209,7 @@ function BallBag() {
         if (!this.pool[size - 1].active) {
             this.pool[size - 1] = null;
             CallMyMethod();
-            if (churn == 0 && Math.random()> 0.07) {
+             if (churn == 0 && Math.random()> 0.07) {
                 var _ball = new pokeball();
                 _ball.init(20, Background.prototype.canvasHeight - 60, imageRepository.pokeball.width, imageRepository.pokeball.height);
                 this.pool[0] = _ball;
@@ -229,33 +244,71 @@ function Background() {
     // Implement abstract function
     this.draw = function () {
 
+        this.context.clearRect(this.x, this.y, Background.prototype.canvasWidth, Background.prototype.canvasHeight);
         this.context.drawImage(imageRepository.background, this.x, this.y);
-        /*
-        // Pan background
-        this.x += this.speed;
-        this.context.drawImage(imageRepository.background, this.x, this.y);
-        // Draw another image at the top edge of the first image
-        this.context.drawImage(imageRepository.background, this.x - this.canvasWidth, this.y);
-        // If the image scrolled off the screen, reset
-        if (this.x >= this.canvasWidth) {
+        this.context.drawImage(imageRepository.scoreboard, this.x, this.y, 150, 100);
+        var t1 = Background.prototype.canvasWidth - 150;
+        this.context.drawImage(imageRepository.countdown, Background.prototype.canvasWidth - 150, 0, 150, 100);
 
-            this.x = 0;
-        }
-        */
+
+        this.context.font = "bolder 60px Verdana";
+        this.context.textAlign = 'center';
+        this.context.fillText(countdown, Background.prototype.canvasWidth - 75, 70);
+
+        this.context.font = "bolder 40px Arial";
+        this.context.textAlign = 'center';
+        // Create gradient
+        var gradient = this.context.createLinearGradient(10, 0, 100, 0);
+        gradient.addColorStop("0", "magenta");
+        gradient.addColorStop("0.5", "blue");
+        gradient.addColorStop("1.0", "red");
+        // Fill with gradient
+        this.context.fillStyle = gradient;
+        this.context.fillText(currency, 75, 60);
+
     };
 }
 
-function goLine() {
+function judge() {
+    this.aim = level * 100 + (1 + level) * level * 500;
+    this.nextaim = this.aim + 100 + 500 * level;
     this.draw = function () {
-        drawDashLine(game.bggoLine, this.x, this.y, 300, Background.prototype.canvasHeight-duration, 5);
+        if (this.aim <= currency) {
+            this.context.font = "bolder 30px Verdana";
+            this.context.textAlign = 'center';
+            this.context.fillStyle = 'blue';
+            this.context.fillText("You Pass the Level!!", Background.prototype.canvasWidth / 2, Background.prototype.canvasHeight / 2 -30);
+            this.context.fillText("Your next aim is " + this.nextaim, Background.prototype.canvasWidth / 2 + 20, Background.prototype.canvasHeight / 2 + 20);
+            this.context.font = "20px Verdana";
+            this.context.fillStyle = 'black';
+            this.context.fillText("Press [SPACE] to LEVEL " + level, Background.prototype.canvasWidth / 2, Background.prototype.canvasHeight - 100);
+            if (KEY_STATUS.space) {
+                KEY_STATUS.space = false;
+                level++;
+                init();
+            }
+        }
+        else {
+            var rank = Math.round(1000000 / currency);
+            this.context.fillStyle = 'red';
+            this.context.font = "bolder 30px Verdana";
+            this.context.textAlign = 'center';
+            this.context.fillText("You Don't know Professor Oak's Mind!", Background.prototype.canvasWidth / 2, Background.prototype.canvasHeight / 2 - 30);
+            this.context.fillText("You are at Rank " + rank, Background.prototype.canvasWidth / 2, Background.prototype.canvasHeight / 2 + 20);
+            this.context.font = "20px Verdana";
+            this.context.fillStyle = 'black';
+            this.context.fillText("Press [SPACE] to RESTART", Background.prototype.canvasWidth / 2, Background.prototype.canvasHeight - 100);
+            if (KEY_STATUS.space) {
+                KEY_STATUS.space = false;
+                newGame();
+            }
+        }
     }
+
 }
-
-
-
 function pokeball() {
 
-    this.active = 1;
+     this.active = 1;
     this.iniX = 2;
     this.iniY = -20;
     this.speedX = this.iniX;
@@ -263,6 +316,7 @@ function pokeball() {
     this.gravity = 0.5;
     this.gravitySpeed = 0;
     this.inhand = 1;
+    this.speed = 5;
 
     this.draw = function () {
         this.context.clearRect(this.x, this.y, this.width, this.height);
@@ -271,7 +325,7 @@ function pokeball() {
                 var myleft = this.x + 10;
                 var myright = this.x + (this.width) - 10;
                 var mytop = this.y + 10;
-                var mybottom = this.y + (this.height) -10;
+                var mybottom = this.y + (this.height) - 10;
                 var len = game.pokemonComponent.pool.length;
                 for (var i = 0; i < len; i++) {
                     var otherobj = game.pokemonComponent.pool[i];
@@ -282,7 +336,7 @@ function pokeball() {
                     if ((mybottom < othertop) || (mytop > otherbottom) || (myright < otherleft) || (myleft > otherright)) {
                     }
                     else{
-                        currency += 2000;
+                        currency += 200;
                         this.active = 0;
                         //not disappearing?
                         game.pokemonComponent.pool[i].goOff = true;
@@ -293,18 +347,31 @@ function pokeball() {
             }
             if (this.active != 0) {
                 if (KEY_STATUS.space || this.inhand == 0) {
-                    this.inhand = 0;
+                    if (KEY_STATUS.space && this.inhand == 1) {
+                        KEY_STATUS.space = false;
+                        this.inhand = 0;
+                        currency -= 20;
+                    }
+                    if (this.speed < 0 && this.speedX > 0) {
+                        this.speedX *= -1;
+                    }
                     this.gravitySpeed += this.gravity;
                     this.x += this.speedX;
                     this.y += this.speedY + this.gravitySpeed;
 
 
                 }
+                else {
+                    if ((this.x > Background.prototype.canvasWidth - imageRepository.pokeball.width) || (this.x < 5)) {
+                        this.speed *= -1;
+                    }
+                        this.x += this.speed;
+                }
                 if (this.x >= pokeball.prototype.canvasWidth || (this.y > landPos && this.gravitySpeed > 20)) {
                     this.active = 0;
                 }
                 else {
-                    this.context.drawImage(imageRepository.pokeball, this.x, this.y);
+                    this.context.drawImage(imageRepository.pokeball, this.x, this.y, imageRepository.pokeball.width, imageRepository.pokeball.height);
                 }
             }
     };
@@ -321,9 +388,10 @@ function masterball() {
     this.gravity = 0.5;
     this.gravitySpeed = 0;
     this.inhand = 1;
+    this.speed = 3;
 
     this.draw = function () {
-        this.context.clearRect(this.x, this.y, this.width, this.height, 100, 100);
+        this.context.clearRect(this.x, this.y, this.width, this.height);
         //detectcollision
         if (this.gravitySpeed > 20) {
             var myleft = this.x + 10;
@@ -340,7 +408,7 @@ function masterball() {
                 if ((mybottom < othertop) || (mytop > otherbottom) || (myright < otherleft) || (myleft > otherright)) {
                 }
                 else {
-                    currency += 2000;
+                    currency += 200;
                     this.active = 0;
                     //not disappearing?
                     game.pokemonComponent.pool[i].goOff = true;
@@ -351,27 +419,39 @@ function masterball() {
         }
         if (this.active != 0) {
             if (KEY_STATUS.space || this.inhand == 0) {
-                this.inhand = 0;
+                if (KEY_STATUS.space && this.inhand == 1) {
+                    KEY_STATUS.space = false;
+                    this.inhand = 0;
+                    currency -= 20;
+                }
+                if (this.speed < 0 && this.speedX > 0) {
+                    this.speedX *= -1;
+                }
                 this.gravitySpeed += this.gravity;
                 this.x += this.speedX;
                 this.y += this.speedY + this.gravitySpeed;
-
-
+            }
+            else {
+                if ((this.x > Background.prototype.canvasWidth - imageRepository.masterball.width) || (this.x < 5)) {
+                    this.speed *= -1;
+                }
+                    this.x += this.speed;
             }
             if (this.x >= masterball.prototype.canvasWidth || (this.y > landPos && this.gravitySpeed > 20)) {
                 this.active = 0;
             }
             else {
-                this.context.drawImage(imageRepository.masterball, this.x, this.y, 100, 100);
+                this.context.drawImage(imageRepository.masterball, this.x, this.y, imageRepository.masterball.width, imageRepository.masterball.height);
             }
         }
     };
 
 }
 
-function pokemon() {
+function pokemon(index) {
     this.alive = false; // Is true if the bullet is currently in use
     this.goOff = false;
+    this.imgIdx = index;
     /*
 	 * Sets the bullet values
 	 */
@@ -394,14 +474,14 @@ function pokemon() {
 	 * the bullet.
 	 */
     this.draw = function () {
-        this.context.clearRect(this.x, this.y, this.width, this.height);
+        this.context.clearRect(this.x, this.y, 70,70);
         this.x += this.speed;
         if (this.x <= 0 - this.width || this.x >= Background.prototype.canvasWidth + this.width || this.goOff == true) {
             this.clear();
             return true;
         }
         else {
-            this.context.drawImage(imageRepository.pokemon, this.x, this.y, 70, 70);
+            this.context.drawImage(imageRepository.pokemon[this.imgIdx], this.x, this.y, 70, 70);
         }
     };
     /*
@@ -426,23 +506,38 @@ function pokemon() {
 var imageRepository = new function () {
     // Define images
     this.background = new Image();
+    this.scoreboard = new Image();
+    this.countdown = new Image();
     this.pokeball = new Image();
     this.masterball = new Image(100,100);
-    this.pokemon = new Image(70,70);
+    this.pokemon = [new Image(), new Image(), new Image(), new Image(), new Image(), new Image()];
     // Set images src
     this.background.src = "Asset/pokemon/background.png";
+    this.scoreboard.src = "Asset/scoreboard.jpg";
+    this.countdown.src = "Asset/countdown.jpg";
     this.pokeball.src = "Asset/pokemon/Pokeball.png";
     this.masterball.src = "Asset/pokemon/masterball.png";
-    this.pokemon.src = "Asset/pokemon/pokemon.gif";
-    this.pokemon.parent = this;
-    this.pokemon.onload = function () {
-        this.width = 70;
-        this.height = 70
+    this.pokemon[0].src = "Asset/pokemon/charizard1.png";
+    this.pokemon[1].src = "Asset/pokemon/charmander2.png";
+    this.pokemon[2].src = "Asset/pokemon/pichu1.png";
+    this.pokemon[3].src = "Asset/pokemon/pika1.png";
+    this.pokemon[4].src = "Asset/pokemon/pokemon.gif";
+    this.pokemon[5].src = "Asset/pokemon/dugtrio1.png";
+    for (var i = 0; i < 6; i++) {
+
+        this.pokemon[i].onload = function () {
+            this.width = 70;
+            this.height = 70;
+        }
     }
-    /*this.masterball.onload = function () {
-        this.width = 100;
-        this.height = 100
-    }*/
+    this.pokeball.onload = function () {
+        this.width = 50;
+        this.height = 50;
+    }
+    this.masterball.onload = function () {
+        this.width = 70;
+        this.height = 70;
+    }
 }
 
 /**
@@ -459,6 +554,7 @@ function Drawable() {
         this.width = width;
         this.height = height;
     }
+    this.speed = 0;
     this.canvasWidth = 0;
     this.canvasHeight = 0;
     // Define abstract function to be implemented in child objects
@@ -474,10 +570,16 @@ function Drawable() {
  */
 function animate() {
     requestAnimFrame(animate);
-    game.background.draw();
-    game.pokeballComponent.animate();
-    game.pokemonComponent.animate();
-    game.goLine.draw();
+    if (countdown >= 0) {
+        game.background.draw();
+        game.pokeballComponent.animate();
+        game.pokemonComponent.animate();
+        updateTime();
+    }
+    else {
+        game.judge.draw();
+    }
+    
     duration++;
 }
 /**
@@ -496,34 +598,19 @@ window.requestAnimFrame = (function () {
 			};
 })();
 
-
-function getBeveling(x, y) {
-    return Math.sqrt(Math.pow(x, 2) + Math.pow(y, 2));
-}
-
-function drawDashLine(context, x1, y1, x2, y2, dashLen) {
-
-    context.clearRect(100, 300, 300, 300);
-    dashLen = dashLen === undefined ? 5 : dashLen;
-    //得到斜边的总长度
-    var beveling = getBeveling(x2 - x1, y2 - y1);
-    //计算有多少个线段
-    var num = Math.floor(beveling / dashLen);
-
-    for (var i = 0 ; i < num; i++) {
-        context[i % 2 == 0 ? 'moveTo' : 'lineTo'](x1 + (x2 - x1) / num * i, y1 + (y2 - y1) / num * i);
+function updateTime() {
+    countframe++;
+    if (countframe > 50) {
+        countdown--;
+        countframe = 0;
     }
-    context.stroke();
 }
-
-
 
 // Callback function invoked on successful 
 // completion of the page method.
 function OnSucceeded(result, userContext, methodName) {
     //alert(result);
     churn = result.d;
-    churn = 1;
 
 }
 

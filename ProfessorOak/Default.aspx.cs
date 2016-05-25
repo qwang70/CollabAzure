@@ -35,7 +35,7 @@ namespace ProfessorOak
         private int churn   =0;
         private int weapon  =1;
         private int rank    =200;
-        private int interdays=1;
+        private int interdays=3;
 
         private HttpResponseMessage response;
         private string responseString;
@@ -105,6 +105,10 @@ namespace ProfessorOak
         {
             MultiView1.ActiveViewIndex = 1;
         }
+        protected void LoadGame_Click(object sender, EventArgs e)
+        {
+            MultiView1.ActiveViewIndex = 2;
+        }
 
         protected void StartGame_Click(object sender, EventArgs e)
         {
@@ -130,18 +134,8 @@ namespace ProfessorOak
             // Predict whether customer will churn
             InvokeRequestResponseService(item).Wait();
 
+            Response.Redirect("~/inGame.aspx");
 
-            if (this.churn == 1)
-            {
-                LiteralSpecial.Text = "Congratulations, you found the ultimate helmet! <BR> Using this, you won the fight!";
-                
-            }
-            else
-            {
-                LiteralSpecial.Text = "The monster is too powerful. You lost!";
-                
-
-            }
         }
         protected void RandomGame_Click(object sender, EventArgs e)
         {
@@ -155,16 +149,75 @@ namespace ProfessorOak
 
             InvokeRequestResponseService(item).Wait();
 
+            Response.Redirect("~/inGame.aspx");
 
-            if (this.churn == 1)
-            {
-                LiteralSpecial.Text = "Congratulations, you found the ultimate helmet! <BR> Using this, you won the fight!";
+        }
+        protected void interday2(object sender, EventArgs e)
+        {
+            Hero item = null;
 
-            }
-            else
-            {
-                LiteralSpecial.Text = "The monster is too powerful. You lost!";
-            }
+            item = new Hero();
+            item.GameTime = DateTime.Now.ToUniversalTime();
+            item.interdays = 2;
+
+            Session["hero"] = item;
+
+
+            InvokeRequestResponseService(item).Wait();
+
+            Response.Redirect("~/inGame.aspx");
+
+        }
+
+        protected void interday4(object sender, EventArgs e)
+        {
+            Hero item = null;
+
+            item = new Hero();
+            item.GameTime = DateTime.Now.ToUniversalTime();
+            item.interdays = 4;
+
+            Session["hero"] = item;
+
+
+            InvokeRequestResponseService(item).Wait();
+
+            Response.Redirect("~/inGame.aspx");
+
+        }
+
+        protected void interday6(object sender, EventArgs e)
+        {
+            Hero item = null;
+
+            item = new Hero();
+            item.GameTime = DateTime.Now.ToUniversalTime();
+            item.interdays = 6;
+
+            Session["hero"] = item;
+
+
+            InvokeRequestResponseService(item).Wait();
+
+            Response.Redirect("~/inGame.aspx");
+
+        }
+
+        protected void interday7(object sender, EventArgs e)
+        {
+            Hero item = null;
+
+            item = new Hero();
+            item.GameTime = DateTime.Now.ToUniversalTime();
+            item.interdays = 7;
+
+            Session["hero"] = item;
+
+
+            InvokeRequestResponseService(item).Wait();
+            Response.Redirect("~/inGame.aspx");
+
+
         }
 
         protected void Mode_Select(object sender, EventArgs e)

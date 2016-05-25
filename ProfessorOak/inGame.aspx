@@ -5,9 +5,6 @@
 			canvas {				position: absolute;
 			}
 			#background {
-				z-index: -3;
-			}
-			#line {
 				z-index: -2;
 			}
 			#pokemon {
@@ -19,21 +16,19 @@
 		</style>
 
     </header>
-    <body onload="init()">
+    <body onload="newGame()">
 	</body>
 
     <div class="huabu">
-        <canvas id="background" width="800px" height="500px  style="border:1px solid #000000;" >
+        <canvas id="background" width="800px" height="480px  style="border:1px solid #000000;" >
 			Your browser does not support canvas. Please try again with a different browser.
 		</canvas>
 		<!-- The canvas for all enemy ships and bullets -->
-		<canvas id="pokeball" width="800px" height="500px">
-		</canvas>
-		<canvas id="line" width="800px" height="500px">
+		<canvas id="pokeball" width="800px" height="480px">
 		</canvas>
 		<!-- The canvas the ship uses (can only move up
          one forth the screen.) -->
-		<canvas id="pokemon" width="800px" height="500px">
+		<canvas id="pokemon" width="800px" height="480px">
 		</canvas> 
 
     </div>
