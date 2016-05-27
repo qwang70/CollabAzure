@@ -179,6 +179,7 @@
     <Content Include="Asset\countdown.jpg" />
     <Content Include="Asset\damu\correct.jpg" />
     <Content Include="Asset\damu\logo.png" />
+    <Content Include="Asset\damu\oak.jpg" />
     <Content Include="Asset\damu\oshie.gif" />
     <Content Include="Asset\damu\Professor_Oak_circle.png" />
     <Content Include="Asset\damu\Professor_Oak_color.png" />

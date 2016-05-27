@@ -19,6 +19,14 @@
     <body onload="newGame()">
 	</body>
 
+    <div class="jumbotron">
+        <font face="Comic sans MS">
+            <p class="lead">Guess what Pokemon Professor Oak might choose.<br>
+                Press [SPACE] to throw the pokemon ball.<br>
+                [HINT] You may get extra point for the right Pokemon choice.
+            </p>
+        </font>
+    </div>
     <div class="huabu">
         <canvas id="background" width="800px" height="480px  style="border:1px solid #000000;" >
 			Your browser does not support canvas. Please try again with a different browser.

@@ -53,7 +53,7 @@
                 <div class="navbar-collapse collapse">
                     <ul class="nav navbar-nav">
                         <li><a runat="server" href="~/">Home</a></li>
-                        <li><a runat="server" href="~/About">About</a></li>
+                        <li><a runat="server" href="~/About">Design Idea</a></li>
                         <li><a runat="server" href="~/Contact">Contact</a></li>
 
                     </ul>
@@ -70,23 +70,6 @@
                                     <a href="https://plus.google.com/share?url=http://professoroakgame.azurewebsites.net/" target="_blank"> 
                                          <img src="https://simplesharebuttons.com/images/somacro/google.png" alt="Google" /> 
                                      </a> 
-      
-                                     <!-- LinkedIn --> 
-                                    <a href="http://www.linkedin.com/shareArticle?mini=true&amp;url=http://professoroakgame.azurewebsites.net/" target="_blank"> 
-                                         <img src="https://simplesharebuttons.com/images/somacro/linkedin.png" alt="LinkedIn" /> 
-                                     </a> 
-      
-                                     <!-- Reddit --> 
-                                     <a href="http://reddit.com/submit?url=http://professoroakgame.azurewebsites.net/&amp;title=Professor Oak Game" target="_blank"> 
-                                                  <img src="https://simplesharebuttons.com/images/somacro/reddit.png" alt="Reddit" /> 
-                                     </a> 
-      
-      
-                                     <!-- Tumblr--> 
-                                     <a href="http://www.tumblr.com/share/link?url=https://simplesharebuttons.com&amp;title=Simple Share Buttons" target="_blank"> 
-                                         <img src="https://simplesharebuttons.com/images/somacro/tumblr.png" alt="Tumblr" /> 
-                                     </a> 
-       
                                      <!-- Twitter --> 
                                      <a href="https://twitter.com/share?url=https://simplesharebuttons.com&amp;text=Simple%20Share%20Buttons&amp;hashtags=simplesharebuttons" target="_blank"> 
                                          <img src="https://simplesharebuttons.com/images/somacro/twitter.png" alt="Twitter" /> 

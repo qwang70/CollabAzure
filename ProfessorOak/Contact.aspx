@@ -1,17 +1,17 @@
 ﻿<%@ Page Title="Contact" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="Contact.aspx.cs" Inherits="ProfessorOak.Contact" %>
 
 <asp:Content ID="BodyContent" ContentPlaceHolderID="MainContent" runat="server">
-    <h2><%: Title %>.</h2>
-    <h3>Your contact page.</h3>
+    <div class="jumbotron">
+    <h3>Contact me for problems and suggestions</h3>
     <address>
-        One Microsoft Way<br />
-        Redmond, WA 98052-6399<br />
-        <abbr title="Phone">P:</abbr>
-        425.555.0100
+        <strong>Qiwen Wang</strong><br />
+        Bachelor of Science in Mathematics and Computer Science<br />
+        University of Illinois<br />
     </address>
 
     <address>
-        <strong>Support:</strong>   <a href="mailto:Support@example.com">Support@example.com</a><br />
-        <strong>Marketing:</strong> <a href="mailto:Marketing@example.com">Marketing@example.com</a>
+        <strong>Support:</strong>   <a href="mailto:qwang70@illinois.edu">qwang70@illinois.edu</a><br />
+        <strong>Marketing:</strong> <a href="mailto:qwang70@illinois.edu">qwang70@illinois.edu</a>
     </address>
+    </div>
 </asp:Content>

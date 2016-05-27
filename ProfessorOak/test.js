@@ -8,6 +8,7 @@ var duration =0;
 var countdown;
 var countframe;
 var level
+var stoprender = 0;
 
 function CallMyMethod() {
      CallPageMethod(OnSucceeded, OnFailed);
@@ -136,10 +137,7 @@ function PoolPokemon() {
 	 */
     this.init = function () {
         for (var i = 0; i < size; i++) {
-            // Initalize the bullet object
-            var _pokemon = new pokemon(Math.floor(Math.random()*5.9));
-            _pokemon.init(0, Background.prototype.canvasHeight *7/16 + Math.round(Math.random()*200)-100, imageRepository.pokemon[0].width, imageRepository.pokemon[0].height);
-            this.pool[i] = _pokemon;
+            this.pool[i] = null;
         }
     };
     /*
@@ -151,13 +149,17 @@ function PoolPokemon() {
         var x;
         if(temp == 0){
             
-            x = (Math.random() * 5) + 1;
+            x = (Math.random() * 5 * Math.floor(level/3 + 1)) + 1;
         }
         else{
             
-            x = (-1)*((Math.random() * 5) + 1);
+            x = (-1) * ((Math.random() * 5 * Math.floor(level / 3 + 1)) + 1);
         }
-        if (!this.pool[size - 1].alive) {
+        if (this.pool[size - 1] == null || !this.pool[size - 1].alive) {
+            // Initalize the pokemon object
+            var _pokemon = new pokemon(Math.floor(Math.random() * 14.9));
+            _pokemon.init(0, Background.prototype.canvasHeight * 7 / 16 + Math.round(Math.random() * 200) - 100, imageRepository.pokemon[0].width, imageRepository.pokemon[0].height);
+            this.pool[size - 1] = _pokemon;
             this.pool[size - 1].spawn(x);
             this.pool.unshift(this.pool.pop());
         }
@@ -171,7 +173,7 @@ function PoolPokemon() {
         count+=1;
         for (var i = 0; i < size; i++) {
             // Only draw until we find a bullet that is not alive
-            if (this.pool[i].alive) {
+            if (this.pool[i] != null && this.pool[i].alive) {
                 if (this.pool[i].draw()) {
                     this.pool.push((this.pool.splice(i, 1))[0]);
                 }
@@ -270,26 +272,29 @@ function Background() {
 }
 
 function judge() {
-    this.aim = level * 100 + (1 + level) * level * 500;
-    this.nextaim = this.aim + 100 + 500 * level;
+    this.aim = level * 100 + (1 + level) * level * 250;
+    this.nextaim = this.aim + 100 + 500 * (level+1);
     this.draw = function () {
         if (this.aim <= currency) {
             this.context.font = "bolder 30px Verdana";
             this.context.textAlign = 'center';
             this.context.fillStyle = 'blue';
-            this.context.fillText("You Pass the Level!!", Background.prototype.canvasWidth / 2, Background.prototype.canvasHeight / 2 -30);
+            this.context.fillText("You Pass the Level!!", Background.prototype.canvasWidth / 2, Background.prototype.canvasHeight / 2 - 30);
             this.context.fillText("Your next aim is " + this.nextaim, Background.prototype.canvasWidth / 2 + 20, Background.prototype.canvasHeight / 2 + 20);
             this.context.font = "20px Verdana";
             this.context.fillStyle = 'black';
             this.context.fillText("Press [SPACE] to LEVEL " + level, Background.prototype.canvasWidth / 2, Background.prototype.canvasHeight - 100);
             if (KEY_STATUS.space) {
                 KEY_STATUS.space = false;
+                stoprender = 1;
                 level++;
                 init();
             }
         }
         else {
-            var rank = Math.round(1000000 / currency);
+            var rank = 1000000;
+            if(currency > 0)
+                rank = Math.round(1000000 / currency);
             this.context.fillStyle = 'red';
             this.context.font = "bolder 30px Verdana";
             this.context.textAlign = 'center';
@@ -300,6 +305,7 @@ function judge() {
             this.context.fillText("Press [SPACE] to RESTART", Background.prototype.canvasWidth / 2, Background.prototype.canvasHeight - 100);
             if (KEY_STATUS.space) {
                 KEY_STATUS.space = false;
+                stoprender = 1;
                 newGame();
             }
         }
@@ -308,15 +314,15 @@ function judge() {
 }
 function pokeball() {
 
-     this.active = 1;
-    this.iniX = 2;
+    this.active = 1;
+    this.iniX = (2 * Math.floor(level / 2 + 1)) % 10;
     this.iniY = -20;
     this.speedX = this.iniX;
     this.speedY = this.iniY;
     this.gravity = 0.5;
     this.gravitySpeed = 0;
     this.inhand = 1;
-    this.speed = 5;
+    this.speed = (5 * Math.floor(level / 2 + 1))%30;
 
     this.draw = function () {
         this.context.clearRect(this.x, this.y, this.width, this.height);
@@ -328,19 +334,33 @@ function pokeball() {
                 var mybottom = this.y + (this.height) - 10;
                 var len = game.pokemonComponent.pool.length;
                 for (var i = 0; i < len; i++) {
-                    var otherobj = game.pokemonComponent.pool[i];
-                    var otherleft = otherobj.x;
-                    var otherright = otherobj.x + (otherobj.width);
-                    var othertop = otherobj.y;
-                    var otherbottom = otherobj.y + (otherobj.height);
-                    if ((mybottom < othertop) || (mytop > otherbottom) || (myright < otherleft) || (myleft > otherright)) {
-                    }
-                    else{
-                        currency += 200;
-                        this.active = 0;
-                        //not disappearing?
-                        game.pokemonComponent.pool[i].goOff = true;
-                        break;
+                    if (game.pokemonComponent.pool[i] != null) {
+
+                        var otherobj = game.pokemonComponent.pool[i];
+                        var otherleft = otherobj.x;
+                        var otherright = otherobj.x + (otherobj.width);
+                        var othertop = otherobj.y;
+                        var otherbottom = otherobj.y + (otherobj.height);
+                        if ((mybottom < othertop) || (mytop > otherbottom) || (myright < otherleft) || (myleft > otherright)) {
+                        }
+                        else {
+                            if (otherobj.imgIdx == 14) {
+                                currency -= 2000;
+                            }
+                            else if (otherobj.imgIdx == 12) {
+                                currency += 1000;
+                            }
+                            else if (otherobj.imgIdx == 3) {
+                                currency += 777;
+                            }
+                            else {
+                                currency += 200;
+                            }
+                            this.active = 0;
+                            //not disappearing?
+                            game.pokemonComponent.pool[i].goOff = true;
+                            break;
+                        }
                     }
                 }
                 
@@ -381,14 +401,14 @@ function pokeball() {
 function masterball() {
 
     this.active = 1;
-    this.iniX = 2;
+    this.iniX = (2 * Math.floor(level / 2 + 1))%10;
     this.iniY = -20;
     this.speedX = this.iniX;
     this.speedY = this.iniY;
     this.gravity = 0.5;
     this.gravitySpeed = 0;
     this.inhand = 1;
-    this.speed = 3;
+    this.speed = (3 * Math.floor(level / 2 + 1)) % 10;
 
     this.draw = function () {
         this.context.clearRect(this.x, this.y, this.width, this.height);
@@ -400,19 +420,33 @@ function masterball() {
             var mybottom = this.y + (this.height) - 10;
             var len = game.pokemonComponent.pool.length;
             for (var i = 0; i < len; i++) {
-                var otherobj = game.pokemonComponent.pool[i];
-                var otherleft = otherobj.x;
-                var otherright = otherobj.x + (otherobj.width);
-                var othertop = otherobj.y;
-                var otherbottom = otherobj.y + (otherobj.height);
-                if ((mybottom < othertop) || (mytop > otherbottom) || (myright < otherleft) || (myleft > otherright)) {
-                }
-                else {
-                    currency += 200;
-                    this.active = 0;
-                    //not disappearing?
-                    game.pokemonComponent.pool[i].goOff = true;
-                    break;
+                if (game.pokemonComponent.pool[i] != null) {
+
+                    var otherobj = game.pokemonComponent.pool[i];
+                    var otherleft = otherobj.x;
+                    var otherright = otherobj.x + (otherobj.width);
+                    var othertop = otherobj.y;
+                    var otherbottom = otherobj.y + (otherobj.height);
+                    if ((mybottom < othertop) || (mytop > otherbottom) || (myright < otherleft) || (myleft > otherright)) {
+                    }
+                    else {
+                        if (otherobj.imgIdx == 14) {
+                            currency -= 2000;
+                        }
+                        else if (otherobj.imgIdx == 12) {
+                            currency += 1000;
+                        }
+                        else if (otherobj.imgIdx == 3) {
+                            currency += 777;
+                        }
+                        else {
+                            currency += 200;
+                        }
+                        this.active = 0;
+                        //not disappearing?
+                        game.pokemonComponent.pool[i].goOff = true;
+                        break;
+                    }
                 }
             }
 
@@ -510,7 +544,10 @@ var imageRepository = new function () {
     this.countdown = new Image();
     this.pokeball = new Image();
     this.masterball = new Image(100,100);
-    this.pokemon = [new Image(), new Image(), new Image(), new Image(), new Image(), new Image()];
+    this.pokemon = [];
+    for (var i = 0; i < 15; i++) {
+        this.pokemon[i] = new Image();
+    }
     // Set images src
     this.background.src = "Asset/pokemon/background.png";
     this.scoreboard.src = "Asset/scoreboard.jpg";
@@ -523,7 +560,17 @@ var imageRepository = new function () {
     this.pokemon[3].src = "Asset/pokemon/pika1.png";
     this.pokemon[4].src = "Asset/pokemon/pokemon.gif";
     this.pokemon[5].src = "Asset/pokemon/dugtrio1.png";
-    for (var i = 0; i < 6; i++) {
+    this.pokemon[6].src = "Asset/pokemon/raichu1.png";
+    this.pokemon[7].src = "Asset/pokemon/weezing1.png";
+    this.pokemon[8].src = "Asset/pokemon/voltorb1.png";
+    this.pokemon[9].src = "Asset/pokemon/pika4.png";
+    this.pokemon[10].src = "Asset/pokemon/magmeton1.png";
+    this.pokemon[11].src = "Asset/pokemon/koffing1.png";
+    this.pokemon[12].src = "Asset/pokemon/exeggutor1.png";
+    this.pokemon[13].src = "Asset/pokemon/charmeleon1.png";
+    this.pokemon[14].src = "Asset/damu/Professor_Oak_color.png";
+
+    for (var i = 0; i < 15; i++) {
 
         this.pokemon[i].onload = function () {
             this.width = 70;
@@ -569,18 +616,24 @@ function Drawable() {
  * object.
  */
 function animate() {
-    requestAnimFrame(animate);
-    if (countdown >= 0) {
-        game.background.draw();
-        game.pokeballComponent.animate();
-        game.pokemonComponent.animate();
-        updateTime();
+    if (!stoprender) {
+
+        requestAnimFrame(animate);
+        if (countdown >= 0 && currency >= 0) {
+            game.background.draw();
+            game.pokeballComponent.animate();
+            game.pokemonComponent.animate();
+            updateTime();
+        }
+        else {
+            game.judge.draw();
+        }
+
+        duration++;
     }
     else {
-        game.judge.draw();
+        stoprender = 0;
     }
-    
-    duration++;
 }
 /**
  * requestAnim shim layer by Paul Irish
@@ -617,7 +670,7 @@ function OnSucceeded(result, userContext, methodName) {
 // Callback function invoked on failure 
 // of the page method.
 function OnFailed(error, userContext, methodName) {
-    window.alert("Fail churn");
+    window.alert("Fail to trigger Churn Analysis. Please try to refresh page.");
 
 }
 // The keycodes that will be mapped when a user presses a button.
