@@ -149,11 +149,11 @@ function PoolPokemon() {
         var x;
         if(temp == 0){
             
-            x = (Math.random() * 5 * Math.floor(level/3 + 1)) + 1;
+            x = ((Math.random() * 5 * Math.floor(level/3 + 1)) + 1) % 15;
         }
         else{
             
-            x = (-1) * ((Math.random() * 5 * Math.floor(level / 3 + 1)) + 1);
+            x = (-1) * (((Math.random() * 5 * Math.floor(level / 5 + 1)) + 1)) % 15;
         }
         if (this.pool[size - 1] == null || !this.pool[size - 1].alive) {
             // Initalize the pokemon object
@@ -315,14 +315,20 @@ function judge() {
 function pokeball() {
 
     this.active = 1;
-    this.iniX = (2 * Math.floor(level / 2 + 1)) % 10;
+    var s = (5 + Math.floor(level / 3));
+    if (s > 15) {
+        this.speed = 15;
+    }
+    else {
+        this.speed = s
+    }
+    this.iniX = this.speed / 2;
     this.iniY = -20;
     this.speedX = this.iniX;
     this.speedY = this.iniY;
     this.gravity = 0.5;
     this.gravitySpeed = 0;
     this.inhand = 1;
-    this.speed = (5 * Math.floor(level / 2 + 1))%30;
 
     this.draw = function () {
         this.context.clearRect(this.x, this.y, this.width, this.height);
@@ -401,14 +407,20 @@ function pokeball() {
 function masterball() {
 
     this.active = 1;
-    this.iniX = (2 * Math.floor(level / 2 + 1))%10;
+    var s = (3 + Math.floor(level / 4));
+    if (s > 10) {
+        this.speed = 10;
+    }
+    else {
+        this.speed = s
+    }
+    this.iniX = this.speed / 2;
     this.iniY = -20;
     this.speedX = this.iniX;
     this.speedY = this.iniY;
     this.gravity = 0.5;
     this.gravitySpeed = 0;
     this.inhand = 1;
-    this.speed = (3 * Math.floor(level / 2 + 1)) % 10;
 
     this.draw = function () {
         this.context.clearRect(this.x, this.y, this.width, this.height);

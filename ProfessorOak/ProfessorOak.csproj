@@ -231,6 +231,7 @@
     <None Include="Properties\PublishProfiles\ProfessorOakGame %283%29.pubxml" />
     <None Include="Properties\PublishProfiles\ProfessorOakGame %284%29.pubxml" />
     <None Include="Properties\PublishProfiles\ProfessorOakGame %285%29.pubxml" />
+    <None Include="Properties\PublishProfiles\ProfessorOakGame %286%29.pubxml" />
     <None Include="Properties\PublishProfiles\ProfessorOakGame.pubxml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="game.js" />
